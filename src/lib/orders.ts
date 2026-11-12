@@ -21,7 +21,7 @@ export function simulatedBookings(storeId: string, day: Date, key: string): numb
   const h = hash(`${storeId}|${dayKey}|${key}`);
   const hour = Number(key.slice(0, 2));
   const rush = (hour >= 6 && hour < 9) || (hour >= 11 && hour < 13) || (hour >= 16 && hour < 18);
-  const base = h % (rush ? 10 : 6); // Stosszeit: 0–9, sonst 0–5
+  const base = h % (rush ? 11 : 6); // Stosszeit: 0–10 (≥ 8 = voll), sonst 0–5
   return Math.min(SLOT_CAPACITY, base);
 }
 

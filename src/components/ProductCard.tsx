@@ -26,7 +26,7 @@ export function ProductCard({ product }: { product: Product }) {
         <div className="mt-auto flex items-center justify-between gap-2 pt-2">
           <span className="font-semibold tabular-nums">{chf(product.price)}</span>
           {qty === 0 ? (
-            <button type="button" className="btn-primary px-4" onClick={() => addToCart(product.id)} aria-label={`${product.name} in den Warenkorb, ${chf(product.price)}`}>
+            <button type="button" className="btn-primary px-4" onClick={() => addToCart(product.id)} aria-label={`Dazu: ${product.name}, ${chf(product.price)}`}>
               <span aria-hidden="true" className="text-lg leading-none">+</span> Dazu
             </button>
           ) : (

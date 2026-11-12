@@ -11,8 +11,6 @@ export function HeartKnot({ className = 'h-8 w-8' }: { className?: string }) {
       />
       {/* Knotenlinien = Teigstrang */}
       <path d="M24 14c-2.5 4.5-2.8 10 0 16M24 14c2.5 4.5 2.8 10 0 16" fill="none" stroke="#3E2A1A" strokeWidth="1.8" strokeLinecap="round" />
-      <path d="M13 17c2.5-1.5 5-1 7 1M35 17c-2.5-1.5-5-1-7 1" fill="none" stroke="#3E2A1A" strokeWidth="1.6" strokeLinecap="round" opacity=".55" />
-      <circle cx="24" cy="22" r="1.6" fill="#C8323C" />
     </svg>
   );
 }

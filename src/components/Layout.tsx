@@ -53,7 +53,7 @@ function Header() {
           )}
         </Link>
       </div>
-      <nav aria-label="Navigation mobil" className="container-page flex gap-1 overflow-x-auto pb-2 md:hidden">
+      <nav aria-label="Navigation mobil" className="container-page flex gap-0.5 overflow-x-auto pb-2 text-[13px] md:hidden">
         <NavLink to="/sortiment" className={navClass}>Sortiment</NavLink>
         <NavLink to="/sammelkarte" className={navClass}>Sammelkarte</NavLink>
         <NavLink to="/filialen" className={(a) => `${navClass(a)} gap-1 whitespace-nowrap`}>
