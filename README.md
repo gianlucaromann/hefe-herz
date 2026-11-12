@@ -80,3 +80,12 @@ src/
 - `npm test`: 17 Tests grün · `npm run build`: fehlerfrei
 - Lighthouse (mobil, lokaler Preview-Build): Start 90/100/100, Sortiment 98/100/100, Kasse 98/100/100 (Performance/Accessibility/Best Practices)
 - E2E-Durchlauf mit Playwright bei 360 px: Bestellung, Status, .ics, Nachbestellen, Backstube; kein horizontales Scrollen
+
+## GitHub Pages
+
+```bash
+npm run build:pages   # baut nach docs/ (Hash-Routing, relative Pfade)
+```
+
+Einstellungen: *Settings → Pages → Build and deployment → Source: Deploy from a branch*,
+Branch `claude/youthful-allen-ti3awi`, Ordner `/docs`. Nach Änderungen `build:pages` erneut ausführen und committen.

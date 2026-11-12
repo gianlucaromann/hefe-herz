@@ -1,0 +1,1 @@
+import{j as t,E as e,L as i}from"./index-kqeB3VZG.js";function n(){return t.jsx(e,{title:"Diese Seite ist nicht aufgegangen",action:t.jsx(i,{to:"/",className:"btn-primary",children:"Zur Startseite"}),children:"Die Adresse gibt es nicht (mehr)."})}export{n as default};

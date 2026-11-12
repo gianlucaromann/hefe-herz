@@ -3,12 +3,12 @@ import '@fontsource-variable/inter';
 import './index.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, MemoryRouter } from 'react-router-dom';
+import { BrowserRouter, HashRouter, MemoryRouter } from 'react-router-dom';
 import { App } from './App';
 import { AppProvider } from './state/AppState';
 
-// Für die Artifact-Vorschau (eingebettete Einzeldatei) ohne URL-Routing
-const Router = import.meta.env.VITE_ROUTER === 'memory' ? MemoryRouter : BrowserRouter;
+// memory: Artifact-Vorschau (Einzeldatei) · hash: GitHub Pages (kein SPA-Fallback nötig)
+const Router = { memory: MemoryRouter, hash: HashRouter }[import.meta.env.VITE_ROUTER as string] ?? BrowserRouter;
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
