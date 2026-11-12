@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-teig font-sans text-kruste antialiased;
+  }
+  h1, h2, h3 {
+    @apply font-display tracking-tight;
+  }
+  :focus-visible {
+    outline: 3px solid #C8323C;
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full px-5 font-semibold transition
+      active:scale-[.97] disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary { @apply btn bg-herz text-white hover:bg-herz-dark; }
+  .btn-secondary { @apply btn border-2 border-kruste/80 bg-mehl text-kruste hover:bg-getreide-light; }
+  .btn-ghost { @apply btn text-kruste hover:bg-getreide-light; }
+  .card { @apply rounded-2xl bg-mehl shadow-karte; }
+  .container-page { @apply mx-auto w-full max-w-6xl px-4 sm:px-6; }
+  .input {
+    @apply min-h-[44px] w-full rounded-xl border-2 border-linie bg-mehl px-4 text-base text-kruste
+      placeholder:text-kruste-muted focus:border-herz focus:outline-none;
+  }
+  .chip {
+    @apply inline-flex min-h-[44px] items-center gap-1 rounded-full border-2 px-4 text-sm font-semibold transition;
+  }
+}
+
+@keyframes pop { 0% { transform: scale(1); } 40% { transform: scale(1.35); } 100% { transform: scale(1); } }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes pulse-soft { 0%, 100% { opacity: 1; } 50% { opacity: .55; } }
+.animate-pop { animation: pop .35s ease-out; }
+.animate-rise { animation: rise .35s ease-out both; }
+.animate-pulse-soft { animation: pulse-soft 1.6s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
