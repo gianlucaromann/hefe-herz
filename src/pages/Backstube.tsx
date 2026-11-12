@@ -17,6 +17,7 @@ export default function Backstube() {
   const now = useNow(3_000);
   const [filter, setFilter] = useState<string>('alle');
   const [hideDone, setHideDone] = useState(true);
+  const [confirmReset, setConfirmReset] = useState(false);
 
   const list = orders
     .map((o) => ({ ...o, effective: effectiveStatus(o, now.getTime()) }))
@@ -48,15 +49,29 @@ export default function Backstube() {
           <input type="checkbox" className="h-5 w-5 accent-herz" checked={hideDone} onChange={(e) => setHideDone(e.target.checked)} />
           Abgeholte ausblenden
         </label>
-        {orders.length > 0 && (
-          <button
-            type="button"
-            className="btn-ghost ml-auto text-sm underline"
-            onClick={() => window.confirm('Alle Demo-Bestellungen und die Sammelkarte löschen?') && resetDemo()}
-          >
-            Demo zurücksetzen
-          </button>
-        )}
+        {orders.length > 0 &&
+          (confirmReset ? (
+            <span className="ml-auto flex flex-wrap items-center gap-2 text-sm">
+              Alle Demo-Bestellungen und die Sammelkarte löschen?
+              <button
+                type="button"
+                className="btn-primary text-sm"
+                onClick={() => {
+                  resetDemo();
+                  setConfirmReset(false);
+                }}
+              >
+                Ja, löschen
+              </button>
+              <button type="button" className="btn-ghost text-sm underline" onClick={() => setConfirmReset(false)}>
+                Abbrechen
+              </button>
+            </span>
+          ) : (
+            <button type="button" className="btn-ghost ml-auto text-sm underline" onClick={() => setConfirmReset(true)}>
+              Demo zurücksetzen
+            </button>
+          ))}
       </div>
 
       <div className="mt-5">
