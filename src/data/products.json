@@ -1,0 +1,29 @@
+[
+  { "id": "buttergipfeli", "name": "Buttergipfeli", "description": "Blättrig, goldbraun, mit Schweizer Butter.", "price": 1.9, "category": "zmorge", "allergens": ["Gluten", "Milch", "Ei"], "tags": ["vegetarisch"], "art": "gipfeli" },
+  { "id": "vollkorngipfeli", "name": "Vollkorngipfeli", "description": "Mit Honig und Dinkelvollkorn.", "price": 2.1, "category": "zmorge", "allergens": ["Gluten", "Milch", "Ei"], "tags": ["vegetarisch"], "art": "gipfeli" },
+  { "id": "birchermuesli", "name": "Bircher im Becher", "description": "Hafer, Apfel, Joghurt, Beeren. Löffel inklusive.", "price": 5.9, "category": "zmorge", "allergens": ["Gluten", "Milch", "Nüsse"], "tags": ["vegetarisch"], "art": "becher" },
+  { "id": "overnight-oats", "name": "Overnight Oats Mango", "description": "Hafer, Kokosdrink, Mango, Chia.", "price": 6.2, "category": "zmorge", "allergens": ["Gluten"], "tags": ["vegan", "vegetarisch"], "art": "becher" },
+  { "id": "zmorge-set", "name": "Pendler-Zmorge", "description": "Buttergipfeli + Kaffee Crème. Der Klassiker für Gleis 3.", "price": 5.5, "category": "zmorge", "allergens": ["Gluten", "Milch", "Ei"], "tags": ["vegetarisch"], "art": "set" },
+
+  { "id": "sandwich-schinken", "name": "Laugen-Sandwich Schinken", "description": "Laugenbrot, Hinterschinken, Gurke, Senfbutter.", "price": 7.9, "category": "zmittag", "allergens": ["Gluten", "Milch", "Senf"], "tags": [], "art": "sandwich" },
+  { "id": "sandwich-mozzarella", "name": "Ciabatta Tomate-Mozzarella", "description": "Basilikum-Pesto, Tomate, Mozzarella, Rucola.", "price": 8.4, "category": "zmittag", "allergens": ["Gluten", "Milch", "Nüsse"], "tags": ["vegetarisch"], "art": "sandwich" },
+  { "id": "wrap-falafel", "name": "Falafel-Wrap", "description": "Falafel, Hummus, Rotkraut, Minze.", "price": 8.9, "category": "zmittag", "allergens": ["Gluten", "Sesam"], "tags": ["vegan", "vegetarisch"], "art": "wrap" },
+  { "id": "quiche-lauch", "name": "Lauch-Quiche", "description": "Mürbteig, Lauch, Gruyère. Warm oder kalt.", "price": 7.5, "category": "zmittag", "allergens": ["Gluten", "Milch", "Ei"], "tags": ["vegetarisch"], "art": "quiche" },
+  { "id": "bowl-linsen", "name": "Linsen-Bowl", "description": "Beluga-Linsen, Ofengemüse, Tahini-Dressing.", "price": 11.5, "category": "zmittag", "allergens": ["Sesam", "Senf"], "tags": ["vegan", "vegetarisch"], "art": "bowl" },
+  { "id": "suppe-tag", "name": "Suppe des Tages", "description": "Täglich frisch, mit Brotscheibe. Frag im Laden nach der Sorte.", "price": 6.9, "category": "zmittag", "allergens": ["Gluten", "Sellerie"], "tags": ["vegan", "vegetarisch"], "art": "suppe" },
+
+  { "id": "laugenbrezel", "name": "Laugenbrezel", "description": "Mit grobem Salz, aussen knusprig.", "price": 2.4, "category": "gebaeck", "allergens": ["Gluten"], "tags": ["vegan", "vegetarisch"], "art": "brezel" },
+  { "id": "herzknoten", "name": "Herzknoten", "description": "Unser Butterzopf-Knoten in Herzform. Hausspezialität.", "price": 2.8, "category": "gebaeck", "allergens": ["Gluten", "Milch", "Ei"], "tags": ["vegetarisch"], "art": "knoten" },
+  { "id": "sauerteig-brot", "name": "Sauerteig-Ruchbrot 500 g", "description": "24 Stunden Teigführung, kräftige Kruste.", "price": 6.8, "category": "gebaeck", "allergens": ["Gluten"], "tags": ["vegan", "vegetarisch"], "art": "brot" },
+  { "id": "kaesestange", "name": "Käsestange", "description": "Blätterteig mit Bergkäse.", "price": 3.2, "category": "gebaeck", "allergens": ["Gluten", "Milch"], "tags": ["vegetarisch"], "art": "stange" },
+
+  { "id": "nussgipfel", "name": "Nussgipfel", "description": "Mit Haselnussfüllung, gross genug zum Teilen (theoretisch).", "price": 3.6, "category": "suesses", "allergens": ["Gluten", "Milch", "Ei", "Nüsse"], "tags": ["vegetarisch"], "art": "gipfeli" },
+  { "id": "zimtschnecke", "name": "Zimtschnecke", "description": "Hefeteig, Zimt, Rohrzucker, leichte Glasur.", "price": 3.9, "category": "suesses", "allergens": ["Gluten", "Milch", "Ei"], "tags": ["vegetarisch"], "art": "schnecke" },
+  { "id": "brownie-vegan", "name": "Veganer Brownie", "description": "Dunkle Schokolade, saftig, mit Meersalz.", "price": 4.2, "category": "suesses", "allergens": ["Gluten", "Soja"], "tags": ["vegan", "vegetarisch"], "art": "brownie" },
+  { "id": "apfelkuchen", "name": "Apfelwähe-Stück", "description": "Nach Grossmutters Art, mit Guss.", "price": 4.5, "category": "suesses", "allergens": ["Gluten", "Milch", "Ei"], "tags": ["vegetarisch"], "art": "wähe" },
+
+  { "id": "kaffee-creme", "name": "Kaffee Crème", "description": "Bohnen aus einer kleinen Rösterei der Region.", "price": 4.2, "category": "getraenke", "allergens": ["Milch"], "tags": ["vegetarisch"], "art": "kaffee" },
+  { "id": "hafer-cappuccino", "name": "Hafer-Cappuccino", "description": "Mit Haferdrink statt Kuhmilch.", "price": 5.2, "category": "getraenke", "allergens": ["Gluten"], "tags": ["vegan", "vegetarisch"], "art": "kaffee" },
+  { "id": "eistee", "name": "Hausgemachter Eistee", "description": "Pfirsich-Minze, wenig Zucker, 3 dl.", "price": 3.9, "category": "getraenke", "allergens": [], "tags": ["vegan", "vegetarisch"], "art": "flasche" },
+  { "id": "o-saft", "name": "Orangensaft frisch gepresst", "description": "2,5 dl, ohne Zusätze.", "price": 4.9, "category": "getraenke", "allergens": [], "tags": ["vegan", "vegetarisch"], "art": "flasche" }
+]

@@ -1,0 +1,53 @@
+[
+  {
+    "id": "seewil-bahnhof",
+    "name": "Bahnhof Seewil",
+    "type": "bahnhof",
+    "address": "Bahnhofplatz 2, Unterführung Gleis 1–4",
+    "city": "8999 Seewil",
+    "note": "Direkt beim Aufgang Gleis 3. Abholregal rechts vom Eingang.",
+    "hours": {
+      "0": { "open": "06:30", "close": "20:00" },
+      "1": { "open": "05:30", "close": "20:30" },
+      "2": { "open": "05:30", "close": "20:30" },
+      "3": { "open": "05:30", "close": "20:30" },
+      "4": { "open": "05:30", "close": "20:30" },
+      "5": { "open": "05:30", "close": "21:00" },
+      "6": { "open": "06:30", "close": "20:00" }
+    }
+  },
+  {
+    "id": "birchfeld-bahnhof",
+    "name": "Bahnhof Birchfeld",
+    "type": "bahnhof",
+    "address": "Perronpassage 5",
+    "city": "8998 Birchfeld",
+    "note": "In der Passage zwischen Bus- und Zugperron.",
+    "hours": {
+      "0": null,
+      "1": { "open": "06:00", "close": "19:30" },
+      "2": { "open": "06:00", "close": "19:30" },
+      "3": { "open": "06:00", "close": "19:30" },
+      "4": { "open": "06:00", "close": "19:30" },
+      "5": { "open": "06:00", "close": "19:30" },
+      "6": { "open": "07:00", "close": "17:00" }
+    }
+  },
+  {
+    "id": "seewil-lindenhof",
+    "name": "Lindenhof Seewil",
+    "type": "quartier",
+    "address": "Lindenstrasse 14",
+    "city": "8999 Seewil",
+    "note": "Unsere Quartier-Backstube mit Sitzplätzen. Hier wird für alle Filialen gebacken.",
+    "hours": {
+      "0": null,
+      "1": { "open": "06:30", "close": "18:30" },
+      "2": { "open": "06:30", "close": "18:30" },
+      "3": { "open": "06:30", "close": "18:30" },
+      "4": { "open": "06:30", "close": "18:30" },
+      "5": { "open": "06:30", "close": "18:30" },
+      "6": { "open": "07:00", "close": "16:00" }
+    }
+  }
+]
