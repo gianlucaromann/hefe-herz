@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { STAMPS_FOR_REWARD, useApp } from '../state/AppState';
-import { HeartKnot } from './Logo';
+import { BrandMark } from './Logo';
 
 export function StampCard({ compact = false }: { compact?: boolean }) {
   const { stamps, studiActive, activateStudi } = useApp();
@@ -24,7 +24,7 @@ export function StampCard({ compact = false }: { compact?: boolean }) {
                 style={filled ? { animationDelay: `${i * 40}ms` } : undefined}
                 aria-label={filled ? `Stempel ${i + 1}: gesetzt` : `Stempel ${i + 1}: offen`}
               >
-                {filled ? <HeartKnot className="h-3/4 w-3/4" /> : <span className="text-xs text-kruste-muted">{i + 1}</span>}
+                {filled ? <BrandMark className="h-3/4 w-3/4" /> : <span className="text-xs text-kruste-muted">{i + 1}</span>}
               </li>
             );
           })}

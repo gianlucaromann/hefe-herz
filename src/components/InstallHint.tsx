@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { isIos, isStandalone } from '../lib/pwa';
 import { load, save } from '../lib/storage';
-import { HeartKnot } from './Logo';
+import { BrandMark } from './Logo';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -44,8 +44,8 @@ export function InstallHint() {
 
   return (
     <section className="card flex items-start gap-3 p-4" aria-labelledby="install-titel">
-      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-herz">
-        <HeartKnot className="h-9 w-9" />
+      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-linie bg-teig">
+        <BrandMark className="h-10 w-10" />
       </span>
       <div className="min-w-0 flex-1">
         <h2 id="install-titel" className="text-lg font-semibold">

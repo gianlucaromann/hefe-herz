@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { chf } from '../lib/format';
 import { productById, useApp } from '../state/AppState';
-import { Hefi, Logo } from './Logo';
+import { Logo, LogoStacked } from './Logo';
 import { PinIcon } from './ui';
 
 function DemoBanner() {
@@ -30,7 +30,7 @@ function Header() {
     <header className="sticky top-0 z-30 border-b border-linie bg-teig/95 backdrop-blur">
       <div className="container-page flex items-center gap-2 py-2">
         <Link to="/" className="mr-auto shrink-0 rounded-lg" aria-label="Hefe & Herz, zur Startseite">
-          <Logo className="h-8 sm:h-9" />
+          <Logo className="h-9 sm:h-10" />
         </Link>
         <nav aria-label="Hauptnavigation" className="hidden items-center gap-1 md:flex">
           <NavLink to="/sortiment" className={navClass}>Sortiment</NavLink>
@@ -109,8 +109,8 @@ function Footer() {
   return (
     <footer className="mt-20 border-t border-linie bg-mehl/60 pb-28 pt-8 text-sm text-kruste-muted">
       <div className="container-page flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <Hefi className="h-10 w-10 shrink-0" />
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <LogoStacked className="h-24 w-auto shrink-0 self-start" />
           <p>
             <strong className="block font-display text-base text-kruste">Nach deinem Geschmack, mit Herz gebacken.</strong>
             Hefe &amp; Herz · Winterthur und Zürich HB · fiktive Bäckerei, Demo-Shop
