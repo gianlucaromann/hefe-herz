@@ -1,1 +1,13 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="7" fill="#F6EDE0"/><path d="M16 29.5c-6.5-4.2-12.5-8.6-12.5-15.2C3.5 9.6 7 6.5 11 6.5c2.3 0 4 1.2 5 3 1-1.8 2.7-3 5-3 4 0 7.5 3.1 7.5 7.8 0 6.6-6 11-12.5 15.2z" fill="#B8392E"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <rect width="120" height="120" rx="26" fill="#F6EDE0"/>
+  <g transform="translate(23 2) scale(1.23 1)">
+    <path d="M30 46C19.5 38.5 8 30.5 8 18.5 8 11 13.5 6 20 6c4.6 0 8 2.6 10 6.4C32 8.6 35.4 6 40 6c6.5 0 12 5 12 12.5C52 30.5 40.5 38.5 30 46z" fill="#B8392E"/>
+    <path d="M30 54V116" stroke="#8B5226" stroke-width="6" stroke-linecap="round"/>
+    <g fill="#EBCB94" stroke="#8B5226" stroke-width="5">
+      <ellipse cx="21" cy="72" rx="8" ry="13" transform="rotate(-28 21 72)"/>
+      <ellipse cx="39" cy="72" rx="8" ry="13" transform="rotate(28 39 72)"/>
+      <ellipse cx="20.5" cy="100" rx="8.6" ry="14" transform="rotate(-28 20.5 100)"/>
+      <ellipse cx="39.5" cy="100" rx="8.6" ry="14" transform="rotate(28 39.5 100)"/>
+    </g>
+  </g>
+</svg>
