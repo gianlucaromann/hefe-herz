@@ -4,8 +4,8 @@ import type { OrderStatus } from '../lib/types';
 const STEPS: OrderStatus[] = ['eingegangen', 'zubereitung', 'abholbereit'];
 const HINT: Record<OrderStatus, string> = {
   eingegangen: 'Die Backstube hat deine Bestellung.',
-  zubereitung: 'Wir packen gerade ein.',
-  abholbereit: 'Liegt im Abholregal. Code zeigen, mitnehmen, fertig.',
+  zubereitung: 'Wir machen es warm und packen ein.',
+  abholbereit: 'Liegt am Abholtresen bereit. Code zeigen, mitnehmen, fertig.',
   abgeholt: 'Abgeholt. En Guete!',
 };
 

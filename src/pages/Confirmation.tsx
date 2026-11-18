@@ -7,7 +7,7 @@ import { downloadIcs } from '../lib/ics';
 import { effectiveStatus } from '../lib/orders';
 import { storeById, useApp, useNow } from '../state/AppState';
 
-const PAYMENT_LABEL = { twint: 'Twint (simuliert)', karte: 'Karte (simuliert)', abholung: 'Bei Abholung bezahlen' } as const;
+const PAYMENT_LABEL = { twint: 'Twint', applepay: 'Apple Pay', karte: 'Karte', abholung: 'Bei Abholung' } as const;
 
 export default function Confirmation() {
   const { id } = useParams();
@@ -64,7 +64,7 @@ export default function Confirmation() {
           </h2>
           <p className="font-display text-5xl font-semibold tracking-widest tabular-nums">{order.pickupCode}</p>
           <p className="mt-2 text-sm text-kruste-muted">
-            Am Abholregal den QR-Code scannen oder den Code nennen. {store?.note}
+            Am Abholtresen QR-Code oder Code zeigen, dein Name steht auf der Tüte. {store?.note}
           </p>
           <button type="button" className="btn-secondary mt-4" onClick={() => store && downloadIcs(order, store)}>
             Zum Kalender hinzufügen
@@ -82,14 +82,14 @@ export default function Confirmation() {
               <span>
                 {i.qty}× {i.name}
               </span>
-              <span className="tabular-nums">{chf(i.price * i.qty)}</span>
+              <span className="whitespace-nowrap tabular-nums">{chf(i.price * i.qty)}</span>
             </li>
           ))}
         </ul>
         <dl className="mt-2 space-y-1 border-t border-linie pt-3">
           {order.discount > 0 && (
             <div className="flex justify-between text-sm">
-              <dt>Sammelkarte (Gratis-Produkt)</dt>
+              <dt>Studi Card (Gratis-Zmorge)</dt>
               <dd className="tabular-nums">− {chf(order.discount)}</dd>
             </div>
           )}
@@ -102,13 +102,20 @@ export default function Confirmation() {
             <dd>{PAYMENT_LABEL[order.payment]}</dd>
           </div>
         </dl>
-        <p className="mt-3 text-sm">
-          <strong>+1 Stempel</strong> auf deiner{' '}
-          <Link to="/sammelkarte" className="underline">
-            Sammelkarte
-          </Link>
-          .
-        </p>
+        {(order.stampsEarned ?? 0) > 0 ? (
+          <p className="mt-3 rounded-xl bg-pastell-blau px-3 py-2 text-sm">
+            <strong>+{order.stampsEarned} Stempel</strong> auf deiner{' '}
+            <Link to="/studi-card" className="underline">
+              Studi Card
+            </Link>
+            .
+          </p>
+        ) : null}
+        {order.items.some((i) => i.productId.startsWith('kreation')) && (
+          <p className="mt-3 rounded-xl bg-pastell-rosa px-3 py-2 text-sm">
+            <strong>Zeig deine Kreation!</strong> Poste sie als Instagram-Story mit #ZeigDeineKreation und hol dir beim nächsten Besuch ein Gratis-Topping.
+          </p>
+        )}
       </section>
 
       <div className="flex flex-wrap justify-center gap-3">

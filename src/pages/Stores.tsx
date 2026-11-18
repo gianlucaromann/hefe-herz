@@ -8,7 +8,9 @@ export default function Stores() {
   return (
     <div>
       <h1 className="text-3xl font-semibold sm:text-4xl">Wo holst du ab?</h1>
-      <p className="mt-1 max-w-prose text-kruste-muted">Wir merken uns deine Filiale für das nächste Mal.</p>
+      <p className="mt-1 max-w-prose text-kruste-muted">
+        Zwei Bahnhofsfilialen für den schnellen Zug-Start, eine Stammfiliale mit offener Backstube in der Winterthurer Altstadt. Wir merken uns deine Wahl.
+      </p>
       <div className="mt-5">
         <StorePicker onPicked={() => cartCount > 0 && navigate('/kasse')} />
       </div>
@@ -26,12 +28,30 @@ export default function Stores() {
               {s.city}
             </p>
             <p className="mt-2 text-sm">{s.note}</p>
+            {s.features && (
+              <ul className="mt-3 flex flex-wrap gap-1.5">
+                {s.features.map((f) => (
+                  <li key={f} className="rounded-full bg-pastell-blau px-2 py-0.5 text-xs font-semibold">
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            )}
             <div className="mt-3">
               <HoursTable store={s} />
             </div>
           </section>
         ))}
       </div>
+
+      <section className="mt-8 rounded-3xl bg-pastell-mint p-5" aria-labelledby="tgtg-titel">
+        <h2 id="tgtg-titel" className="text-xl font-semibold">
+          Food Waste? Nicht mit uns.
+        </h2>
+        <p className="mt-1 text-sm">
+          Restware gibts in allen Filialen als Überraschungspaket über Too Good To Go, abholbar in der letzten Stunde vor Ladenschluss.
+        </p>
+      </section>
     </div>
   );
 }

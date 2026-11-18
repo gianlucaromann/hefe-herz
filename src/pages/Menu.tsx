@@ -27,14 +27,14 @@ export function Menu() {
   return (
     <div>
       <h1 className="text-3xl font-semibold sm:text-4xl">Sortiment</h1>
-      <p className="mt-1 max-w-prose text-kruste-muted">Alles frisch aus der Backstube Lindenhof. Wähl aus, wir packen ein.</p>
+      <p className="mt-1 max-w-prose text-kruste-muted">Jeden Morgen frisch aus unserer Backstube in der Winterthurer Altstadt. Wähl aus, wir machen es warm und packen ein.</p>
 
       <div className="mt-4 space-y-2">
         <label htmlFor="suche" className="sr-only">
           Sortiment durchsuchen
         </label>
         <input id="suche" type="search" className="input" placeholder="Suchen, z. B. Gipfeli" value={query} onChange={(e) => setQuery(e.target.value)} />
-        <div className="flex gap-2 overflow-x-auto pb-1" role="group" aria-label="Kategorie">
+        <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0" role="group" aria-label="Kategorie">
           <button type="button" className={chip(category === 'alle')} aria-pressed={category === 'alle'} onClick={() => setCategory('alle')}>
             Alle
           </button>

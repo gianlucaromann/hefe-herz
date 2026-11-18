@@ -59,7 +59,7 @@ export function StorePicker({ onPicked }: { onPicked?: (id: string) => void }) {
               />
               <span className="flex items-center justify-between gap-2">
                 <span className="font-display text-lg font-semibold">{s.name}</span>
-                <span className="rounded-full bg-getreide-light px-2 py-0.5 text-xs font-semibold">{s.type === 'bahnhof' ? 'Bahnhof' : 'Quartier'}</span>
+                <span className="rounded-full bg-getreide-light px-2 py-0.5 text-xs font-semibold">{s.type === 'bahnhof' ? 'Bahnhof' : 'Stadt & Backstube'}</span>
               </span>
               <span className="text-sm text-kruste-muted">
                 {s.address}, {s.city}

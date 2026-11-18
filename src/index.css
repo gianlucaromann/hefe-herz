@@ -29,6 +29,8 @@
   .btn-secondary { @apply btn border-2 border-kruste/80 bg-mehl text-kruste hover:bg-getreide-light; }
   .btn-ghost { @apply btn text-kruste hover:bg-getreide-light; }
   .card { @apply rounded-2xl bg-mehl shadow-karte; }
+  .card-hover { @apply transition hover:-translate-y-0.5 hover:shadow-hoch; }
+  .eyebrow { @apply text-xs font-bold uppercase tracking-[.14em] text-herz; }
   .container-page { @apply mx-auto w-full max-w-6xl px-4 sm:px-6; }
   .input {
     @apply min-h-[44px] w-full rounded-xl border-2 border-linie bg-mehl px-4 text-base text-kruste
@@ -45,6 +47,11 @@
 .animate-pop { animation: pop .35s ease-out; }
 .animate-rise { animation: rise .35s ease-out both; }
 .animate-pulse-soft { animation: pulse-soft 1.6s ease-in-out infinite; }
+
+dialog::backdrop { background: rgba(62, 42, 26, .45); backdrop-filter: blur(2px); }
+dialog[open] { animation: rise .25s ease-out both; }
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

@@ -21,10 +21,11 @@ Für Direktaufrufe von Unterseiten (z. B. `/backstube`) muss ein Hosting die SPA
 |---|---|
 | `/` | Start: Hero, «Dasselbe wie letztes Mal», offene Bestellungen, Filialwahl, Empfehlungen nach Tageszeit, Sammelkarte |
 | `/sortiment` | Sortiment nach Kategorien, Suche, Filter vegan/vegetarisch, Allergene |
-| `/kasse` | Warenkorb, Abholzeit (nächster freier Slot vorausgewählt), Vorname/Handy, simulierte Zahlung, Gratis-Produkt einlösen |
+| `/kasse` | Warenkorb, Abholtag (heute/morgen/übermorgen) und -zeit, Vorauszahlung Twint/Apple Pay/Karte (simuliert), Mindestbestellwert CHF 4.90, Gratis-Zmorge einlösen |
 | `/bestellung/:id` | Bestätigung mit Bestellnummer, Abholcode + QR, Kalender-Export (.ics), simulierter Status |
-| `/sammelkarte` | 10 Stempel = 1 Gratis-Produkt (1 Stempel pro Bestellung) |
-| `/filialen` | 3 Filialen mit Öffnungszeiten (gemerkt im Browser) |
+| `/kreation` | «Deine Kreation»: Brot, Füllung, Sauce, Topping, warm/kalt selbst zusammenstellen; Kreation des Monats |
+| `/studi-card` | Studi Card: 1 Stempel pro Pendler Zmorge, 11. gratis; Bring a Friend (`/sammelkarte` leitet weiter) |
+| `/filialen` | Bahnhof Winterthur, Zürich HB, Altstadt Winterthur (Öffnungszeiten, Ausstattung) |
 | `/backstube` | Team-Ansicht ohne Login: Bestellungen nach Abholzeit, Status per Klick, Demo zurücksetzen |
 | `/datenschutz` | Datenschutz-Hinweis |
 
@@ -37,6 +38,7 @@ Stammkundschaft: «Dasselbe wie letztes Mal» → «Bestellen».
 src/
   data/            products.json, stores.json (Sortiment, Filialen, Öffnungszeiten)
   lib/
+    configure.ts   Zusammenstellbare Produkte (Combos, Kreation): Schlüssel, Preis, Validierung + Test
     slots.ts       Slot-Logik (10-Min-Raster, Vorlauf, Kapazität, Ladenschluss) + slots.test.ts
     orders.ts      simulierte Auslastung, Status-Simulation
     ics.ts         Kalenderdatei

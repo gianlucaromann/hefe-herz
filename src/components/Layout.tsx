@@ -2,13 +2,13 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { chf } from '../lib/format';
 import { productById, useApp } from '../state/AppState';
-import { Logo } from './Logo';
+import { Hefi, Logo } from './Logo';
 import { PinIcon } from './ui';
 
 function DemoBanner() {
   return (
-    <div className="bg-kruste px-4 py-1.5 text-center text-xs font-medium text-teig sm:text-sm">
-      Fiktives Schulprojekt, keine echten Bestellungen
+    <div className="bg-kruste px-4 py-1.5 text-center text-xs font-medium text-teig">
+      Demo-Shop: Bestellungen und Zahlungen werden nur simuliert
     </div>
   );
 }
@@ -34,7 +34,8 @@ function Header() {
         </Link>
         <nav aria-label="Hauptnavigation" className="hidden items-center gap-1 md:flex">
           <NavLink to="/sortiment" className={navClass}>Sortiment</NavLink>
-          <NavLink to="/sammelkarte" className={navClass}>Sammelkarte</NavLink>
+          <NavLink to="/kreation" className={navClass}>Deine Kreation</NavLink>
+          <NavLink to="/studi-card" className={navClass}>Studi Card</NavLink>
           <NavLink to="/filialen" className={navClass}>Filialen</NavLink>
         </nav>
         <Link
@@ -53,9 +54,10 @@ function Header() {
           )}
         </Link>
       </div>
-      <nav aria-label="Navigation mobil" className="container-page flex gap-0.5 overflow-x-auto pb-2 text-[13px] md:hidden">
+      <nav aria-label="Navigation mobil" className="no-scrollbar container-page flex gap-0.5 overflow-x-auto pb-2 text-[13px] md:hidden">
         <NavLink to="/sortiment" className={navClass}>Sortiment</NavLink>
-        <NavLink to="/sammelkarte" className={navClass}>Sammelkarte</NavLink>
+        <NavLink to="/kreation" className={(a) => `${navClass(a)} whitespace-nowrap`}>Kreation</NavLink>
+        <NavLink to="/studi-card" className={(a) => `${navClass(a)} whitespace-nowrap`}>Studi Card</NavLink>
         <NavLink to="/filialen" className={(a) => `${navClass(a)} gap-1 whitespace-nowrap`}>
           <PinIcon /> {store ? store.name : 'Filiale wählen'}
         </NavLink>
@@ -67,7 +69,7 @@ function Header() {
 function CartBar() {
   const { cartCount, cartTotal } = useApp();
   const { pathname } = useLocation();
-  if (cartCount === 0 || pathname.startsWith('/kasse') || pathname.startsWith('/bestellung') || pathname.startsWith('/backstube')) return null;
+  if (cartCount === 0 || pathname.startsWith('/kasse') || pathname.startsWith('/kreation') || pathname.startsWith('/bestellung') || pathname.startsWith('/backstube')) return null;
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t border-linie bg-teig/95 p-3 backdrop-blur" style={{ paddingBottom: 'max(.75rem, env(safe-area-inset-bottom))' }}>
       <div className="mx-auto max-w-xl">
@@ -105,9 +107,15 @@ function CartAnnouncer() {
 
 function Footer() {
   return (
-    <footer className="mt-16 border-t border-linie pb-28 pt-8 text-sm text-kruste-muted">
-      <div className="container-page flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p>Hefe &amp; Herz ist eine erfundene Bäckerei. Demo für ein Hochschulmodul.</p>
+    <footer className="mt-20 border-t border-linie bg-mehl/60 pb-28 pt-8 text-sm text-kruste-muted">
+      <div className="container-page flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
+          <Hefi className="h-10 w-10 shrink-0" />
+          <p>
+            <strong className="block font-display text-base text-kruste">Nach deinem Geschmack, mit Herz gebacken.</strong>
+            Hefe &amp; Herz · Winterthur und Zürich HB · fiktive Bäckerei, Demo-Shop
+          </p>
+        </div>
         <nav aria-label="Fusszeile" className="flex flex-wrap gap-x-4">
           <Link className="inline-flex min-h-[44px] items-center underline" to="/datenschutz">Datenschutz</Link>
           <Link className="inline-flex min-h-[44px] items-center underline" to="/filialen">Filialen &amp; Öffnungszeiten</Link>

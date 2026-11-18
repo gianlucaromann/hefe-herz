@@ -10,13 +10,17 @@ export default {
         herz: { DEFAULT: '#C8323C', dark: '#A3262F' }, // Akzent
         getreide: { DEFAULT: '#E9B44C', light: '#F6E2B3' }, // Zweitakzent
         linie: '#E8DCC8',
+        pastell: { blau: '#DCEBF8', rosa: '#FBE1E4', mint: '#DDF1E4', creme: '#FBF0DC' },
       },
       fontFamily: {
         display: ['"Fraunces Variable"', 'Georgia', '"Times New Roman"', 'serif'],
         sans: ['"Inter Variable"', 'system-ui', '-apple-system', '"Segoe UI"', 'Roboto', 'sans-serif'],
       },
       maxWidth: { prose: '65ch' },
-      boxShadow: { karte: '0 1px 2px rgba(62,42,26,.06), 0 4px 16px rgba(62,42,26,.06)' },
+      boxShadow: {
+        karte: '0 1px 2px rgba(62,42,26,.06), 0 4px 16px rgba(62,42,26,.06)',
+        hoch: '0 2px 4px rgba(62,42,26,.08), 0 12px 32px rgba(62,42,26,.12)',
+      },
     },
   },
   plugins: [],

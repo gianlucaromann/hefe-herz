@@ -3,18 +3,20 @@ import productsData from '../data/products.json';
 import storesData from '../data/stores.json';
 import { KEYS, load, save } from '../lib/storage';
 import { randomDigits } from '../lib/orders';
+import { resolve } from '../lib/configure';
 import type { CartLine, Order, OrderStatus, PaymentMethod, Product, Store } from '../lib/types';
 
 export const PRODUCTS = productsData as Product[];
 export const STORES = storesData as Store[];
 export const STAMPS_FOR_REWARD = 10;
 
-export const productById = (id: string) => PRODUCTS.find((p) => p.id === id);
+export const productById = (id: string) => resolve(id, PRODUCTS);
 export const storeById = (id: string | null | undefined) => STORES.find((s) => s.id === id);
 
 interface Stamps {
   count: number; // 0–9
-  rewards: number; // einlösbare Gratis-Produkte
+  rewards: number; // einlösbare Gratis-Zmorge
+  active?: boolean; // Studi Card aktiviert
 }
 
 interface Profile {
@@ -51,6 +53,8 @@ interface AppState {
   resetDemo: () => void;
 
   stamps: Stamps;
+  studiActive: boolean;
+  activateStudi: () => void;
   profile: Profile;
   lastAdded: { id: string; at: number } | null;
 }
@@ -61,9 +65,14 @@ function lineTotal(cart: CartLine[]) {
   return cart.reduce((sum, l) => sum + (productById(l.productId)?.price ?? 0) * l.qty, 0);
 }
 
+/** Preis des günstigsten Pendler Zmorge im Warenkorb (Studi Card: 11. gratis), sonst 0. */
 export function cheapestItemPrice(cart: CartLine[]): number {
-  const prices = cart.map((l) => productById(l.productId)?.price ?? Infinity);
+  const prices = cart.map((l) => productById(l.productId)).filter((p) => p?.stamp).map((p) => p!.price);
   return prices.length ? Math.min(...prices) : 0;
+}
+
+export function stampsInCart(cart: CartLine[]): number {
+  return cart.reduce((n, l) => n + (productById(l.productId)?.stamp ? l.qty : 0), 0);
 }
 
 export function AppProvider({ children }: { children: ReactNode }) {
@@ -118,11 +127,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
       const items = cart
         .map((l) => {
           const p = productById(l.productId);
-          return p ? { productId: p.id, name: p.name, price: p.price, qty: l.qty } : null;
+          return p ? { productId: p.id, name: p.variant ? `${p.name}: ${p.variant}` : p.name, price: p.price, qty: l.qty } : null;
         })
         .filter((i): i is NonNullable<typeof i> => i !== null);
       const subtotal = lineTotal(cart);
       const discount = input.redeemReward && stamps.rewards > 0 ? cheapestItemPrice(cart) : 0;
+      const active = stamps.active ?? (stamps.count > 0 || stamps.rewards > 0);
+      const earned = active ? Math.max(0, stampsInCart(cart) - (discount > 0 ? 1 : 0)) : 0;
       const order: Order = {
         id: `HH-${randomDigits(4)}`,
         pickupCode: randomDigits(4),
@@ -137,18 +148,19 @@ export function AppProvider({ children }: { children: ReactNode }) {
         payment: input.payment,
         status: 'eingegangen',
         createdAt: new Date().toISOString(),
+        stampsEarned: earned,
       };
       setOrders((o) => [order, ...o]);
       setStamps((s) => {
         const rewards = s.rewards - (discount > 0 ? 1 : 0);
-        const count = s.count + 1;
-        return count >= STAMPS_FOR_REWARD ? { count: count - STAMPS_FOR_REWARD, rewards: rewards + 1 } : { count, rewards };
+        const total = s.count + earned;
+        return { ...s, count: total % STAMPS_FOR_REWARD, rewards: rewards + Math.floor(total / STAMPS_FOR_REWARD) };
       });
       setProfile({ firstName: input.firstName.trim(), phone: input.phone?.trim() ?? '' });
       setCart([]);
       return order;
     },
-    [cart, storeId, stamps.rewards],
+    [cart, storeId, stamps],
   );
 
   const setOrderStatus = useCallback((id: string, status: OrderStatus) => {
@@ -157,7 +169,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const resetDemo = useCallback(() => {
     setOrders([]);
-    setStamps({ count: 0, rewards: 0 });
+    setStamps((s) => ({ count: 0, rewards: 0, active: s.active }));
     setCart([]);
   }, []);
 
@@ -180,6 +192,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setOrderStatus,
       resetDemo,
       stamps,
+      studiActive: stamps.active ?? (stamps.count > 0 || stamps.rewards > 0),
+      activateStudi: () => setStamps((s) => ({ ...s, active: true })),
       profile,
       lastAdded,
     }),

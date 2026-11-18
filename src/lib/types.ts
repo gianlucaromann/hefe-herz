@@ -1,4 +1,4 @@
-export type Category = 'zmorge' | 'zmittag' | 'gebaeck' | 'suesses' | 'getraenke';
+export type Category = 'zmorge' | 'kreation' | 'zmittag' | 'gebaeck' | 'suesses' | 'getraenke';
 export type Tag = 'vegan' | 'vegetarisch';
 
 export interface Product {
@@ -10,6 +10,30 @@ export interface Product {
   allergens: string[];
   tags: Tag[];
   art: string;
+  /** Streichpreis (Summe Einzelpreise) für Bündel */
+  compareAt?: number;
+  /** Preis ist Grundpreis («ab») */
+  priceFrom?: boolean;
+  badge?: string;
+  /** Zählt für die Studi Card */
+  stamp?: boolean;
+  options?: OptionGroup[];
+  /** Nur bei zusammengestellten Produkten: gewählte Optionen als Text */
+  variant?: string;
+}
+
+export interface Option {
+  id: string;
+  label: string;
+  price?: number;
+}
+
+export interface OptionGroup {
+  id: string;
+  label: string;
+  min: number;
+  max: number;
+  options: Option[];
 }
 
 export interface DayHours {
@@ -24,6 +48,7 @@ export interface Store {
   address: string;
   city: string;
   note: string;
+  features?: string[];
   hours: Record<string, DayHours | null>; // 0 = Sonntag … 6 = Samstag
 }
 
@@ -32,7 +57,7 @@ export interface CartLine {
   qty: number;
 }
 
-export type PaymentMethod = 'twint' | 'karte' | 'abholung';
+export type PaymentMethod = 'twint' | 'applepay' | 'karte' | 'abholung';
 export type OrderStatus = 'eingegangen' | 'zubereitung' | 'abholbereit' | 'abgeholt';
 
 export interface OrderItem {
@@ -48,7 +73,7 @@ export interface Order {
   storeId: string;
   items: OrderItem[];
   subtotal: number;
-  discount: number; // Gratis-Produkt aus Sammelkarte
+  discount: number; // Gratis-Zmorge aus Studi Card
   total: number;
   slot: string; // ISO-Zeit der Abholung
   firstName: string;
@@ -57,10 +82,12 @@ export interface Order {
   status: OrderStatus;
   createdAt: string;
   statusChangedManually?: boolean;
+  stampsEarned?: number;
 }
 
 export const CATEGORIES: { id: Category; label: string }[] = [
   { id: 'zmorge', label: 'Zmorge' },
+  { id: 'kreation', label: 'Deine Kreation' },
   { id: 'zmittag', label: 'Zmittag' },
   { id: 'gebaeck', label: 'Gebäck' },
   { id: 'suesses', label: 'Süsses' },

@@ -4,38 +4,44 @@ import { ProductArt } from '../components/ProductArt';
 import { SlotPicker } from '../components/SlotPicker';
 import { StorePicker } from '../components/StorePicker';
 import { Alert, EmptyState, QtyStepper } from '../components/ui';
-import { chf, time } from '../lib/format';
+import { chf, dayLabel, time } from '../lib/format';
 import { bookingsFor } from '../lib/orders';
 import { generateSlots, nextFreeSlot, type Slot } from '../lib/slots';
 import { KEYS, load } from '../lib/storage';
 import type { Order, PaymentMethod, Store } from '../lib/types';
-import { cheapestItemPrice, productById, useApp, useNow } from '../state/AppState';
+import { cheapestItemPrice, productById, stampsInCart, useApp, useNow } from '../state/AppState';
 
-/** Slots für heute oder – falls heute nichts mehr frei ist – den nächsten Öffnungstag. */
-function computeSlots(store: Store, orders: Order[], now: Date): { day: Date; slots: Slot[] } {
-  for (let offset = 0; offset < 7; offset++) {
+export const MIN_ORDER = 4.9;
+
+/** Die nächsten (max. 3) Öffnungstage mit freien Abholzeiten. */
+function computeDays(store: Store, orders: Order[], now: Date): { day: Date; slots: Slot[] }[] {
+  const days: { day: Date; slots: Slot[] }[] = [];
+  for (let offset = 0; offset < 7 && days.length < 3; offset++) {
     const day = new Date(now.getFullYear(), now.getMonth(), now.getDate() + offset);
     const hours = store.hours[String(day.getDay())];
     const base = generateSlots({ now, day, hours });
     const bookings = bookingsFor(store.id, day, orders, base.map((s) => s.key));
     const slots = generateSlots({ now, day, hours, bookings });
-    if (nextFreeSlot(slots)) return { day, slots };
+    if (nextFreeSlot(slots)) days.push({ day, slots });
   }
-  return { day: now, slots: [] };
+  return days;
 }
 
 const PAYMENTS: { id: PaymentMethod; label: string; hint: string }[] = [
-  { id: 'twint', label: 'Twint', hint: 'simuliert' },
-  { id: 'karte', label: 'Karte', hint: 'simuliert' },
-  { id: 'abholung', label: 'Bei Abholung bezahlen', hint: 'bar oder Karte im Laden' },
+  { id: 'twint', label: 'Twint', hint: 'in Sekunden' },
+  { id: 'applepay', label: 'Apple Pay', hint: 'mit Face ID' },
+  { id: 'karte', label: 'Karte', hint: 'Debit oder Kredit' },
 ];
 
 export default function Checkout() {
-  const { cart, cartTotal, store, orders, setQty, removeFromCart, placeOrder, profile, stamps } = useApp();
+  const { cart, cartTotal, store, orders, setQty, removeFromCart, placeOrder, profile, stamps, studiActive, activateStudi, addToCart } = useApp();
   const navigate = useNavigate();
   const now = useNow(20_000);
+  const hour = now.getHours();
 
-  const { day, slots } = useMemo(() => (store ? computeSlots(store, orders, now) : { day: now, slots: [] }), [store, orders, now]);
+  const days = useMemo(() => (store ? computeDays(store, orders, now) : []), [store, orders, now]);
+  const [dayIdx, setDayIdx] = useState(0);
+  const { day, slots } = days[Math.min(dayIdx, days.length - 1)] ?? { day: now, slots: [] };
   const [slotKey, setSlotKey] = useState<string | null>(null);
   const [firstName, setFirstName] = useState(profile.firstName);
   const [phone, setPhone] = useState(profile.phone);
@@ -73,12 +79,16 @@ export default function Checkout() {
 
   const discount = redeem && stamps.rewards > 0 ? cheapestItemPrice(cart) : 0;
   const total = Math.max(0, cartTotal - discount);
+  const belowMin = cartTotal < MIN_ORDER;
+  const hasDrink = cart.some((l) => productById(l.productId)?.category === 'getraenke' || productById(l.productId)?.stamp);
+  const comboCount = stampsInCart(cart);
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const next: typeof errors = {};
-    if (firstName.trim().length < 2) next.name = 'Bitte gib deinen Vornamen an (für das Abholregal).';
+    if (firstName.trim().length < 2) next.name = 'Bitte gib deinen Vornamen an (steht auf deiner Tüte).';
     if (phone.trim() && !/^\+?[0-9 ]{9,16}$/.test(phone.trim())) next.phone = 'Diese Nummer sieht nicht richtig aus, z. B. 079 123 45 67.';
+    if (belowMin) next.slot = `Mindestbestellwert ${chf(MIN_ORDER)}.`;
     if (!store) next.slot = 'Bitte wähl zuerst eine Filiale.';
     else if (!slotKey) next.slot = 'Bitte wähl eine Abholzeit.';
     setErrors(next);
@@ -89,13 +99,13 @@ export default function Checkout() {
 
     setSubmitting(true);
     // Zahlung simulieren (kurzer Ladezustand)
-    await new Promise((r) => setTimeout(r, payment === 'abholung' ? 300 : 900));
+    await new Promise((r) => setTimeout(r, 900));
 
     // Kapazität unmittelbar vor dem Abschicken erneut prüfen (z. B. Bestellung aus anderem Tab)
-    const fresh = computeSlots(store, load<Order[]>(KEYS.orders, []), new Date());
-    const chosen = fresh.slots.find((s) => s.key === slotKey);
-    if (!chosen || chosen.state !== 'frei' || fresh.day.toDateString() !== day.toDateString()) {
-      const alt = nextFreeSlot(fresh.slots);
+    const fresh = computeDays(store, load<Order[]>(KEYS.orders, []), new Date()).find((d) => d.day.toDateString() === day.toDateString());
+    const chosen = fresh?.slots.find((s) => s.key === slotKey);
+    if (!fresh || !chosen || chosen.state !== 'frei') {
+      const alt = fresh && nextFreeSlot(fresh.slots);
       setErrors({ slot: `Slot gerade vergeben. ${alt ? `Wie wärs mit ${alt.key}?` : 'Heute ist leider nichts mehr frei.'}` });
       setSlotKey(alt?.key ?? null);
       setSubmitting(false);
@@ -122,15 +132,18 @@ export default function Checkout() {
             if (!p) return null;
             return (
               <li key={l.productId} className="flex flex-wrap items-center gap-3 py-3">
-                <ProductArt art={p.art} className="h-12 w-16 shrink-0 rounded-lg" />
-                <div className="min-w-0 flex-1">
+                <ProductArt art={p.art} category={p.category} className="h-12 w-16 shrink-0 rounded-lg" />
+                <div className="min-w-0 flex-1 basis-44">
                   <p className="font-semibold leading-tight">{p.name}</p>
+                  {p.variant && <p className="text-xs text-kruste-muted">{p.variant}</p>}
                   <p className="text-sm text-kruste-muted tabular-nums">{chf(p.price * l.qty)}</p>
                 </div>
-                <QtyStepper qty={l.qty} label={p.name} onChange={(q) => setQty(p.id, q)} />
+                <div className="ml-auto flex items-center gap-1">
+                  <QtyStepper qty={l.qty} label={p.name} onChange={(q) => setQty(p.id, q)} />
                 <button type="button" onClick={() => removeFromCart(p.id)} className="btn-ghost px-3 text-sm underline" aria-label={`${p.name} entfernen`}>
                   Entfernen
-                </button>
+                  </button>
+                </div>
               </li>
             );
           })}
@@ -139,6 +152,24 @@ export default function Checkout() {
           <span>Zwischensumme</span>
           <span className="tabular-nums">{chf(cartTotal)}</span>
         </div>
+        {belowMin && (
+          <div className="mt-3">
+            <Alert tone="info">
+              Mindestbestellwert für Vorbestellungen: <strong>{chf(MIN_ORDER)}</strong>. Noch {chf(MIN_ORDER - cartTotal)}, z. B. mit einem Kaffee.
+            </Alert>
+          </div>
+        )}
+        {!hasDrink && (
+          <div className="mt-3 flex items-center gap-3 rounded-xl bg-pastell-blau px-3 py-2">
+            <ProductArt art="kaffee" category="getraenke" className="h-10 w-12 shrink-0 rounded-lg" />
+            <p className="flex-1 text-sm">
+              <strong>Kaffee Crème dazu?</strong> Regional geröstet · {chf(3.9)}
+            </p>
+            <button type="button" className="btn-primary px-4 text-sm" onClick={() => addToCart('kaffee-creme')}>
+              + Dazu
+            </button>
+          </div>
+        )}
         <Link to="/sortiment" className="mt-2 inline-flex min-h-[44px] items-center text-sm font-semibold text-herz underline">
           + Noch etwas dazu
         </Link>
@@ -156,6 +187,24 @@ export default function Checkout() {
         ) : (
           <div className="mt-3 space-y-3">
             {errors.slot && <Alert tone="error">{errors.slot}</Alert>}
+            {days.length > 1 && (
+              <div className="flex gap-2" role="group" aria-label="Abholtag">
+                {days.map((d, i) => (
+                  <button
+                    key={d.day.toDateString()}
+                    type="button"
+                    aria-pressed={i === dayIdx}
+                    onClick={() => setDayIdx(i)}
+                    className={`chip capitalize ${i === dayIdx ? 'border-kruste bg-kruste text-teig' : 'border-linie bg-mehl'}`}
+                  >
+                    {dayLabel(d.day, now)}
+                  </button>
+                ))}
+              </div>
+            )}
+            {dayIdx === 0 && days.length > 1 && hour >= 15 && (
+              <p className="text-sm text-kruste-muted">Tipp: Für morgen früh jetzt bestellen, dann liegt alles vor der Morgenspitze bereit.</p>
+            )}
             {slots.length === 0 ? (
               <Alert tone="info">In den nächsten Tagen sind keine Abholzeiten frei. Versuch es später nochmals.</Alert>
             ) : (
@@ -229,9 +278,7 @@ export default function Checkout() {
         <h2 id="zahlung-titel" className="text-xl font-semibold">
           Zahlung
         </h2>
-        <Alert tone="info">
-          <strong>Demo, es wird nichts bezahlt.</strong> Twint und Karte sind nur simuliert.
-        </Alert>
+        <p className="text-sm text-kruste-muted">Du zahlst im Voraus und holst ohne Anstehen ab. (Demo: Die Zahlung wird nur simuliert.)</p>
         <fieldset className="grid gap-2 sm:grid-cols-3">
           <legend className="sr-only">Zahlungsart</legend>
           {PAYMENTS.map((p) => (
@@ -247,18 +294,31 @@ export default function Checkout() {
             </label>
           ))}
         </fieldset>
-        {stamps.rewards > 0 && (
+        {comboCount > 0 && !studiActive && (
+          <div className="flex flex-wrap items-center gap-3 rounded-xl bg-pastell-blau px-4 py-2 text-sm">
+            <span className="flex-1">
+              <strong>Studi oder Lernende:r?</strong> Aktivier die Studi Card und sammle {comboCount === 1 ? 'deinen ersten Stempel' : `${comboCount} Stempel`}.
+            </span>
+            <button type="button" className="btn-secondary min-h-[40px] text-sm" onClick={activateStudi}>
+              Aktivieren
+            </button>
+          </div>
+        )}
+        {stamps.rewards > 0 && cheapestItemPrice(cart) === 0 && (
+          <Alert tone="info">Dein Gratis-Zmorge wartet: Leg ein Pendler Zmorge in den Warenkorb, um es einzulösen.</Alert>
+        )}
+        {stamps.rewards > 0 && cheapestItemPrice(cart) > 0 && (
           <label className="flex min-h-[44px] cursor-pointer items-center gap-3 rounded-xl bg-getreide-light px-4 py-2">
             <input type="checkbox" checked={redeem} onChange={(e) => setRedeem(e.target.checked)} className="h-5 w-5 accent-herz" />
             <span>
-              <strong>Gratis-Produkt einlösen</strong> (Sammelkarte voll) · minus {chf(cheapestItemPrice(cart))}
+              <strong>Gratis-Zmorge einlösen</strong> (Studi Card voll) · minus {chf(cheapestItemPrice(cart))}
             </span>
           </label>
         )}
         <dl className="space-y-1 border-t border-linie pt-3">
           {discount > 0 && (
             <div className="flex justify-between text-sm">
-              <dt>Sammelkarte</dt>
+              <dt>Studi Card</dt>
               <dd className="tabular-nums">− {chf(discount)}</dd>
             </div>
           )}
@@ -272,11 +332,11 @@ export default function Checkout() {
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-linie bg-teig/95 p-3 backdrop-blur" style={{ paddingBottom: 'max(.75rem, env(safe-area-inset-bottom))' }}>
         <div className="mx-auto flex max-w-2xl items-center gap-3">
           <p className="hidden text-sm leading-tight min-[400px]:block">
-            <span className="block font-semibold">{selectedSlot ? `Abholung ${time(selectedSlot.start)}` : 'Keine Zeit gewählt'}</span>
+            <span className="block font-semibold">{selectedSlot ? `${dayLabel(day, now)} ${time(selectedSlot.start)}` : 'Keine Zeit gewählt'}</span>
             <span className="text-kruste-muted">{store?.name ?? 'Filiale wählen'}</span>
           </p>
-          <button type="submit" form="checkout" className="btn-primary flex-1 text-base" disabled={submitting || !store || !slotKey} aria-busy={submitting}>
-            {submitting ? (payment === 'abholung' ? 'Bestellung wird gesendet …' : 'Zahlung wird simuliert …') : `Bestellen · ${chf(total)}`}
+          <button type="submit" form="checkout" className="btn-primary flex-1 text-base" disabled={submitting || !store || !slotKey || belowMin} aria-busy={submitting}>
+            {submitting ? 'Zahlung läuft …' : `Bezahlen & bestellen · ${chf(total)}`}
           </button>
         </div>
       </div>

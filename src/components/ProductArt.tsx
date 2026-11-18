@@ -43,6 +43,28 @@ function Shape({ art }: { art: string }) {
           <path d="M20 60h80c0 8-18 12-40 12s-40-4-40-12z" fill={G} />
         </g>
       );
+    case 'set-brot':
+      return (
+        <g {...s}>
+          <path d="M12 52c0-8 12-12 26-12s26 4 26 12z" fill={G} />
+          <path d="M12 55c9 3 17-3 26 0s17-3 26 0" fill="none" stroke="#5E8C3A" strokeWidth="4" />
+          <path d="M12 60h52c0 6-12 9-26 9s-26-3-26-9z" fill={G} />
+          <path d="M72 38h28l-3 34H75z" fill={W} />
+          <path d="M70 38h32" />
+          <path d="M80 30c0-4 4-4 4-8M90 30c0-4 4-4 4-8" fill="none" opacity=".6" />
+        </g>
+      );
+    case 'kreation':
+      return (
+        <g {...s}>
+          <path d="M20 44c0-10 18-16 40-16s40 6 40 16z" fill={G} />
+          <path d="M18 48c14 4 28-4 42 0s28-4 42 0" fill="none" stroke="#5E8C3A" strokeWidth="4" />
+          <rect x="22" y="50" width="76" height="6" rx="3" fill="#F6C75A" />
+          <rect x="24" y="56" width="72" height="4" rx="2" fill={R} />
+          <path d="M20 62h80c0 8-18 12-40 12s-40-4-40-12z" fill={G} />
+          <path d="M60 24c-3-3-8-1-8 3 0 4 8 8 8 8s8-4 8-8c0-4-5-6-8-3z" fill={R} />
+        </g>
+      );
     case 'wrap':
       return (
         <g {...s}>
@@ -150,10 +172,19 @@ function Shape({ art }: { art: string }) {
   }
 }
 
-export function ProductArt({ art, className = '' }: { art: string; className?: string }) {
+export const BG: Record<string, string> = {
+  zmorge: '#FBF0DC',
+  kreation: '#FBE1E4',
+  zmittag: '#DDF1E4',
+  gebaeck: '#FBF0DC',
+  suesses: '#FBE1E4',
+  getraenke: '#DCEBF8',
+};
+
+export function ProductArt({ art, category, className = '' }: { art: string; category?: string; className?: string }) {
   return (
-    <svg viewBox="0 0 120 90" className={className} aria-hidden="true" focusable="false">
-      <rect width="120" height="90" fill="#FBF0DC" />
+    <svg viewBox="0 0 120 90" className={className} style={{ background: BG[category ?? ''] ?? '#FBF0DC' }} aria-hidden="true" focusable="false">
+      <rect width="120" height="90" fill={BG[category ?? ''] ?? '#FBF0DC'} />
       <ellipse cx="60" cy="78" rx="44" ry="6" fill="#3E2A1A" opacity=".07" />
       <Shape art={art} />
     </svg>

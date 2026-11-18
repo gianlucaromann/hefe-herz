@@ -8,7 +8,7 @@ export default function Privacy() {
       </p>
       <h2 className="text-xl font-semibold">Was gespeichert wird</h2>
       <p>
-        Gewählte Filiale, Warenkorb, Bestellungen, Sammelkarte sowie Vorname und optionale Handynummer werden ausschliesslich im{' '}
+        Gewählte Filiale, Warenkorb, Bestellungen, Studi Card sowie Vorname und optionale Handynummer werden ausschliesslich im{' '}
         <code>localStorage</code> deines Browsers gespeichert. Nichts davon verlässt dein Gerät.
       </p>
       <h2 className="text-xl font-semibold">Was nicht passiert</h2>

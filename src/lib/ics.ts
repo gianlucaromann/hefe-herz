@@ -25,7 +25,7 @@ export function buildIcs(order: Order, store: Store, now = new Date()): string {
     `DTEND:${utcStamp(end)}`,
     `SUMMARY:${escape(`Abholen bei Hefe & Herz (${order.id})`)}`,
     `LOCATION:${escape(`Hefe & Herz ${store.name}, ${store.address}, ${store.city}`)}`,
-    `DESCRIPTION:${escape(`Abholcode: ${order.pickupCode}\n${items}\n\nDemo – fiktives Schulprojekt.`)}`,
+    `DESCRIPTION:${escape(`Abholcode: ${order.pickupCode}\n${items}\n\nCode am Abholtresen zeigen.`)}`,
     'BEGIN:VALARM',
     'TRIGGER:-PT10M',
     'ACTION:DISPLAY',

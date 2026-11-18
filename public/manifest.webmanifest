@@ -1,7 +1,7 @@
 {
   "name": "Hefe & Herz",
   "short_name": "Hefe & Herz",
-  "description": "Zmorge und Zmittag vorbestellen, in 30 Sekunden abholen. Fiktives Schulprojekt.",
+  "description": "Pendler Zmorge vorbestellen und ohne Anstehen abholen.",
   "lang": "de-CH",
   "start_url": "./",
   "scope": "./",

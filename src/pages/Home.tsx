@@ -1,20 +1,58 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { HeartKnot } from '../components/Logo';
-import { ProductCard } from '../components/ProductCard';
+import { Hefi } from '../components/Logo';
+import { PriceTag, ProductCard } from '../components/ProductCard';
+import { ProductArt } from '../components/ProductArt';
 import { StampCard } from '../components/StampCard';
 import { StorePicker, todayHours } from '../components/StorePicker';
 import { chf, dayLabel, time } from '../lib/format';
 import { effectiveStatus, STATUS_LABEL } from '../lib/orders';
-import { PRODUCTS, storeById, useApp, useNow } from '../state/AppState';
+import { PRODUCTS, productById, storeById, useApp, useNow } from '../state/AppState';
+
+function Check() {
+  return (
+    <svg viewBox="0 0 20 20" className="h-5 w-5 shrink-0 text-herz" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M4 10.5l4 4 8-9" />
+    </svg>
+  );
+}
+
+/** Kampagnenmotiv im Splitscreen: zwei ganz verschiedene Morgen, beide enden gut. */
+function SplitMorning() {
+  return (
+    <figure className="overflow-hidden rounded-3xl shadow-hoch" aria-label="Zwei Morgen, ein Zmorge">
+      <div className="grid grid-cols-2">
+        <div className="bg-pastell-blau p-4 sm:p-6">
+          <p className="font-display text-3xl font-semibold tabular-nums sm:text-4xl">07:52</p>
+          <p className="mt-1 text-sm font-semibold">Verschlafen.</p>
+          <p className="text-sm text-kruste-muted">Zug in 4 Minuten. Haare nass, Kopf leer.</p>
+        </div>
+        <div className="bg-pastell-rosa p-4 sm:p-6">
+          <p className="font-display text-3xl font-semibold tabular-nums sm:text-4xl">06:45</p>
+          <p className="mt-1 text-sm font-semibold">Alles im Griff.</p>
+          <p className="text-sm text-kruste-muted">Kreation am Vorabend bestellt, Podcast an.</p>
+        </div>
+      </div>
+      <figcaption className="flex items-center gap-3 bg-kruste px-4 py-3 text-teig sm:px-6">
+        <Hefi className="h-9 w-9 shrink-0" />
+        <span className="text-sm">
+          <strong>Beide:</strong> Code zeigen, warmes Zmorge mitnehmen, Zug erwischen.
+        </span>
+      </figcaption>
+    </figure>
+  );
+}
 
 export function Home() {
-  const { store, lastOrder, orders, fillCartFromOrder, setStoreId } = useApp();
+  const { store, lastOrder, orders, fillCartFromOrder, setStoreId, profile } = useApp();
   const navigate = useNavigate();
   const now = useNow(10_000);
   const hour = now.getHours();
   const featuredCat = hour < 10 ? 'zmorge' : hour < 14 ? 'zmittag' : 'suesses';
-  const featured = PRODUCTS.filter((p) => p.category === featuredCat).slice(0, 4);
+  const featured = PRODUCTS.filter((p) => p.category === featuredCat && !p.stamp).slice(0, 4);
+  const combos = PRODUCTS.filter((p) => p.stamp);
   const active = orders.filter((o) => effectiveStatus(o, now.getTime()) !== 'abgeholt' && new Date(o.slot).getTime() > now.getTime() - 60 * 60_000);
+  const greeting = hour < 11 ? 'Guete Morge' : hour < 17 ? 'Hoi' : 'Guete Abig';
+  const monat = productById('kreation-monat')!;
 
   const reorder = () => {
     if (!lastOrder) return;
@@ -24,34 +62,42 @@ export function Home() {
   };
 
   return (
-    <div className="space-y-10">
-      <section className="grid items-center gap-6 md:grid-cols-[1.3fr_1fr]" aria-labelledby="hero-titel">
+    <div className="space-y-14">
+      {profile.firstName && (
+        <p className="-mb-8 flex items-center gap-2 text-sm font-semibold">
+          <Hefi className="h-7 w-7" /> {greeting}, {profile.firstName}! Hefi hat den Ofen schon an.
+        </p>
+      )}
+
+      <section className="grid items-center gap-8 md:grid-cols-[1.15fr_1fr]" aria-labelledby="hero-titel">
         <div>
-          <p className="mb-2 inline-block rounded-full bg-getreide-light px-3 py-1 text-sm font-semibold">Click &amp; Collect</p>
-          <h1 id="hero-titel" className="text-4xl font-semibold leading-[1.05] sm:text-5xl lg:text-6xl">
-            Vorbestellen.
-            <br />
-            In <span className="text-herz">30 Sekunden</span> abholen.
+          <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-mehl px-3 py-1 text-sm font-semibold shadow-karte">
+            <span className="h-2 w-2 rounded-full bg-herz" aria-hidden="true" /> Neu: Pendler Zmorge ab CHF 4.90
+          </p>
+          <h1 id="hero-titel" className="text-[2.6rem] font-semibold leading-[1.02] sm:text-6xl">
+            Dein Morgen darf chaotisch sein.
+            <span className="mt-1 block text-herz">Dein Zmorge nicht.</span>
           </h1>
           <p className="mt-4 max-w-prose text-lg text-kruste-muted">
-            Fünf Minuten Umsteigezeit reichen für Zmorge. Bestell im Zug, schnapp dir die Tüte am Abholregal und erwisch den Anschluss.
+            Im Zug vorbestellen, am Abholtresen Code zeigen, in unter einer Minute weiter. Frisch und warm aus unserer eigenen Backstube.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link to="/sortiment" className="btn-primary text-base">
-              Jetzt bestellen
+              Pendler Zmorge bestellen
             </Link>
-            {lastOrder && (
-              <button type="button" onClick={reorder} className="btn-secondary text-base">
-                Dasselbe wie letztes Mal
-              </button>
-            )}
+            <Link to="/kreation" className="btn-secondary text-base">
+              Kreation zusammenstellen
+            </Link>
           </div>
+          <ul className="mt-6 grid gap-2 text-sm sm:grid-cols-3">
+            {['Ohne Anstehen', 'Twint & Apple Pay', 'Studi Card: 11. Zmorge gratis'].map((t) => (
+              <li key={t} className="flex items-center gap-1.5 font-semibold">
+                <Check /> {t}
+              </li>
+            ))}
+          </ul>
         </div>
-        <div className="hidden justify-center md:flex" aria-hidden="true">
-          <div className="relative flex h-64 w-64 items-center justify-center rounded-full bg-getreide-light">
-            <HeartKnot className="h-40 w-40" />
-          </div>
-        </div>
+        <SplitMorning />
       </section>
 
       {active.length > 0 && (
@@ -64,7 +110,7 @@ export function Home() {
               const st = effectiveStatus(o, now.getTime());
               return (
                 <li key={o.id}>
-                  <Link to={`/bestellung/${o.id}`} className="card flex items-center justify-between gap-3 p-4 hover:ring-2 hover:ring-linie">
+                  <Link to={`/bestellung/${o.id}`} className="card card-hover flex items-center justify-between gap-3 p-4">
                     <span>
                       <span className="block font-semibold">
                         {o.id} · {dayLabel(new Date(o.slot), now)} {time(o.slot)}
@@ -93,25 +139,60 @@ export function Home() {
             </p>
           </div>
           <button type="button" onClick={reorder} className="btn-primary shrink-0">
-            Nochmals bestellen
+            Mit einem Tap nachbestellen
           </button>
         </section>
       )}
 
-      <section aria-labelledby="filiale-titel">
-        <div className="mb-3 flex items-baseline justify-between gap-2">
-          <h2 id="filiale-titel" className="text-2xl font-semibold">
-            {store ? 'Deine Filiale' : 'Wo holst du ab?'}
-          </h2>
-          {store && <span className="text-sm text-kruste-muted">{todayHours(store, now)}</span>}
+      <section aria-labelledby="combo-titel">
+        <p className="eyebrow">Spar-Combos</p>
+        <h2 id="combo-titel" className="text-3xl font-semibold">
+          Pendler Zmorge
+        </h2>
+        <p className="mt-1 max-w-prose text-kruste-muted">Getränk plus Gipfeli oder Brötli, günstiger als einzeln. Jedes Zmorge gibt einen Stempel auf die Studi Card.</p>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          {combos.map((p) => (
+            <ProductCard key={p.id} product={p} />
+          ))}
         </div>
-        <StorePicker />
+      </section>
+
+      <section className="grid items-center gap-6 overflow-hidden rounded-3xl bg-pastell-rosa p-5 sm:p-8 md:grid-cols-[1fr_1.1fr]" aria-labelledby="kreation-titel">
+        <div>
+          <p className="eyebrow">Nur bei uns</p>
+          <h2 id="kreation-titel" className="text-3xl font-semibold">
+            Nach deinem Geschmack, mit Herz gebacken.
+          </h2>
+          <p className="mt-2 max-w-prose">Stell dein Brötli selbst zusammen. Wir backen, belegen und machen es warm, bevor du da bist.</p>
+          <ol className="mt-4 flex flex-wrap gap-2 text-sm font-semibold">
+            {['Brot', 'Füllung', 'Sauce', 'Topping'].map((s, i) => (
+              <li key={s} className="flex items-center gap-2 rounded-full bg-mehl px-3 py-1.5">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-herz text-xs text-white">{i + 1}</span>
+                {s}
+              </li>
+            ))}
+          </ol>
+          <Link to="/kreation" className="btn-primary mt-5">
+            Jetzt zusammenstellen · ab CHF 5.50
+          </Link>
+        </div>
+        <Link to="/kreation" className="card card-hover block overflow-hidden" aria-label={`${monat.name}, zur Kreation`}>
+          <ProductArt art="kreation" category="kreation" className="h-40 w-full" />
+          <div className="p-4">
+            <p className="eyebrow">Kreation des Monats</p>
+            <p className="font-display text-xl font-semibold">{monat.name.replace('Kreation des Monats ', '')}</p>
+            <p className="text-sm text-kruste-muted">{monat.description}</p>
+            <div className="mt-2">
+              <PriceTag product={monat} />
+            </div>
+          </div>
+        </Link>
       </section>
 
       <section aria-labelledby="empf-titel">
         <div className="mb-3 flex items-baseline justify-between gap-2">
           <h2 id="empf-titel" className="text-2xl font-semibold">
-            {featuredCat === 'zmorge' ? 'Fürs Zmorge' : featuredCat === 'zmittag' ? 'Fürs Zmittag' : 'Für den Zvieri'}
+            {featuredCat === 'zmorge' ? 'Frisch fürs Zmorge' : featuredCat === 'zmittag' ? 'Fürs Zmittag' : 'Für den Zvieri'}
           </h2>
           <Link to="/sortiment" className="inline-flex min-h-[44px] items-center font-semibold text-herz underline">
             Ganzes Sortiment
@@ -129,14 +210,14 @@ export function Home() {
           <h2 id="sofunktionierts" className="text-2xl font-semibold">
             So gehts
           </h2>
-          <ol className="mt-3 space-y-3">
+          <ol className="mt-3 space-y-4">
             {[
-              ['Auswählen', 'Zmorge oder Zmittag in den Warenkorb.'],
-              ['Zeit wählen', 'Nächster freier Slot ist schon vorausgewählt.'],
-              ['Abholen', 'Code am Abholregal zeigen. Fertig.'],
+              ['Auswählen', 'Pendler Zmorge, Kreation oder Zmittag. Am Vorabend oder im Bus.'],
+              ['Im Voraus zahlen', 'Mit Twint, Apple Pay oder Karte. Nächste freie Zeit ist vorausgewählt.'],
+              ['Code zeigen', 'Am Abholtresen. Wir geben dir die Tüte persönlich, du erwischst den Zug.'],
             ].map(([t, d], i) => (
               <li key={t} className="flex gap-3">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-herz font-bold text-white">{i + 1}</span>
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-herz font-bold text-white">{i + 1}</span>
                 <span>
                   <strong className="block">{t}</strong>
                   <span className="text-kruste-muted">{d}</span>
@@ -146,6 +227,30 @@ export function Home() {
           </ol>
         </div>
         <StampCard compact />
+      </section>
+
+      <section aria-labelledby="filiale-titel">
+        <div className="mb-3 flex items-baseline justify-between gap-2">
+          <h2 id="filiale-titel" className="text-2xl font-semibold">
+            {store ? 'Deine Filiale' : 'Wo holst du ab?'}
+          </h2>
+          {store && <span className="text-sm text-kruste-muted">{todayHours(store, now)}</span>}
+        </div>
+        <StorePicker />
+      </section>
+
+      <section className="grid gap-4 rounded-3xl bg-pastell-mint p-5 sm:grid-cols-[auto_1fr] sm:items-center sm:p-6" aria-labelledby="retten-titel">
+        <span className="flex h-14 w-14 items-center justify-center rounded-full bg-mehl text-3xl" aria-hidden="true">
+          🌱
+        </span>
+        <div>
+          <h2 id="retten-titel" className="text-xl font-semibold">
+            Abends retten statt wegwerfen
+          </h2>
+          <p className="text-sm">
+            Was am Abend übrig bleibt, gibts als Überraschungspaket über Too Good To Go. Abholung in der letzten Stunde vor Ladenschluss am Abholtresen.
+          </p>
+        </div>
       </section>
     </div>
   );
