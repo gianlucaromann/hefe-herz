@@ -1,4 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { InstallHint } from '../components/InstallHint';
 import { Hefi } from '../components/Logo';
 import { ProductCard } from '../components/ProductCard';
 import { ProductArt } from '../components/ProductArt';
@@ -75,6 +76,8 @@ export function Home() {
           </span>
         </Link>
       </section>
+
+      <InstallHint />
 
       {active.length > 0 && (
         <section aria-labelledby="aktiv-titel">

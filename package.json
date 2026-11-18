@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "test": "vitest run",
     "build:artifact": "vite build -c vite.artifact.config.ts && node scripts/artifact.mjs",
-    "build:pages": "tsc -b && VITE_ROUTER=hash vite build --base=./ --outDir docs --emptyOutDir && touch docs/.nojekyll"
+    "build:pages": "tsc -b && VITE_ROUTER=hash vite build --base=./ --outDir docs --emptyOutDir && touch docs/.nojekyll && node scripts/sw.mjs"
   },
   "dependencies": {
     "@fontsource-variable/fraunces": "^5.3.0",

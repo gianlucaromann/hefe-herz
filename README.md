@@ -91,4 +91,5 @@ npm run build:pages   # baut nach docs/ (Hash-Routing, relative Pfade)
 
 Einstellungen: *Settings → Pages → Build and deployment → Source: Deploy from a branch*,
 Branch `claude/youthful-allen-ti3awi`, Ordner `/docs`. Nach Änderungen `build:pages` erneut ausführen und committen.
+Web-App: `public/manifest.webmanifest`, App-Icons, Service Worker `public/sw.js` (Dateiliste wird von `scripts/sw.mjs` beim Build eingesetzt). Die App funktioniert nach dem ersten Besuch offline; auf der Startseite erscheint ein Installationshinweis.
 Eigene Domain: `www.hefe-herz.ch` (hefe-herz.ch leitet weiter) (Datei `public/CNAME`, wird bei jedem Build nach `docs/` kopiert).

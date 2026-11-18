@@ -5,6 +5,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, HashRouter, MemoryRouter } from 'react-router-dom';
 import { App } from './App';
+import { registerServiceWorker } from './lib/pwa';
 import { AppProvider } from './state/AppState';
 
 // memory: Artifact-Vorschau (Einzeldatei) · hash: GitHub Pages (kein SPA-Fallback nötig)
@@ -19,3 +20,5 @@ createRoot(document.getElementById('root')!).render(
     </Router>
   </StrictMode>,
 );
+
+registerServiceWorker();
