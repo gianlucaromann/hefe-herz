@@ -119,10 +119,15 @@ export default function Checkout() {
   const selectedSlot = slots.find((s) => s.key === slotKey);
 
   return (
-    <form id="checkout" onSubmit={onSubmit} noValidate className="mx-auto max-w-2xl space-y-6 pb-24">
-      <h1 className="text-3xl font-semibold sm:text-4xl">Kasse</h1>
+    <form
+      id="checkout"
+      onSubmit={onSubmit}
+      noValidate
+      className="mx-auto max-w-2xl space-y-6 pb-24 lg:grid lg:max-w-6xl lg:grid-cols-[minmax(0,1fr)_420px] lg:items-start lg:gap-8 lg:space-y-0"
+    >
+      <h1 className="text-3xl font-semibold sm:text-4xl lg:col-span-2">Kasse</h1>
 
-      <section className="card p-4 sm:p-5" aria-labelledby="wk-titel">
+      <section className="card p-4 sm:p-5 lg:sticky lg:top-28 lg:col-start-2 lg:row-start-2" aria-labelledby="wk-titel">
         <h2 id="wk-titel" className="text-xl font-semibold">
           Warenkorb
         </h2>
@@ -175,6 +180,7 @@ export default function Checkout() {
         </Link>
       </section>
 
+      <div className="space-y-6 lg:col-start-1 lg:row-start-2">
       <section className="card p-4 sm:p-5" aria-labelledby="zeit-titel">
         <h2 id="zeit-titel" className="text-xl font-semibold">
           Abholzeit {store && <span className="font-sans text-base font-normal text-kruste-muted">· {store.name}</span>}
@@ -328,6 +334,8 @@ export default function Checkout() {
           </div>
         </dl>
       </section>
+
+      </div>
 
       <div className="fixed inset-x-0 bottom-0 z-40 border-t border-linie bg-teig/95 p-3 backdrop-blur" style={{ paddingBottom: 'max(.75rem, env(safe-area-inset-bottom))' }}>
         <div className="mx-auto flex max-w-2xl items-center gap-3">

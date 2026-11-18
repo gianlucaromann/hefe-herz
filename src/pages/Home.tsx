@@ -1,44 +1,18 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Hefi } from '../components/Logo';
-import { PriceTag, ProductCard } from '../components/ProductCard';
+import { ProductCard } from '../components/ProductCard';
 import { ProductArt } from '../components/ProductArt';
 import { StampCard } from '../components/StampCard';
 import { StorePicker, todayHours } from '../components/StorePicker';
 import { chf, dayLabel, time } from '../lib/format';
 import { effectiveStatus, STATUS_LABEL } from '../lib/orders';
-import { PRODUCTS, productById, storeById, useApp, useNow } from '../state/AppState';
+import { PRODUCTS, storeById, useApp, useNow } from '../state/AppState';
 
 function Check() {
   return (
     <svg viewBox="0 0 20 20" className="h-5 w-5 shrink-0 text-herz" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
       <path d="M4 10.5l4 4 8-9" />
     </svg>
-  );
-}
-
-/** Kampagnenmotiv im Splitscreen: zwei ganz verschiedene Morgen, beide enden gut. */
-function SplitMorning() {
-  return (
-    <figure className="overflow-hidden rounded-3xl shadow-hoch" aria-label="Zwei Morgen, ein Zmorge">
-      <div className="grid grid-cols-2">
-        <div className="bg-pastell-blau p-4 sm:p-6">
-          <p className="font-display text-3xl font-semibold tabular-nums sm:text-4xl">07:52</p>
-          <p className="mt-1 text-sm font-semibold">Verschlafen.</p>
-          <p className="text-sm text-kruste-muted">Zug in 4 Minuten. Haare nass, Kopf leer.</p>
-        </div>
-        <div className="bg-pastell-rosa p-4 sm:p-6">
-          <p className="font-display text-3xl font-semibold tabular-nums sm:text-4xl">06:45</p>
-          <p className="mt-1 text-sm font-semibold">Alles im Griff.</p>
-          <p className="text-sm text-kruste-muted">Kreation am Vorabend bestellt, Podcast an.</p>
-        </div>
-      </div>
-      <figcaption className="flex items-center gap-3 bg-kruste px-4 py-3 text-teig sm:px-6">
-        <Hefi className="h-9 w-9 shrink-0" />
-        <span className="text-sm">
-          <strong>Beide:</strong> Code zeigen, warmes Zmorge mitnehmen, Zug erwischen.
-        </span>
-      </figcaption>
-    </figure>
   );
 }
 
@@ -52,7 +26,6 @@ export function Home() {
   const combos = PRODUCTS.filter((p) => p.stamp);
   const active = orders.filter((o) => effectiveStatus(o, now.getTime()) !== 'abgeholt' && new Date(o.slot).getTime() > now.getTime() - 60 * 60_000);
   const greeting = hour < 11 ? 'Guete Morge' : hour < 17 ? 'Hoi' : 'Guete Abig';
-  const monat = productById('kreation-monat')!;
 
   const reorder = () => {
     if (!lastOrder) return;
@@ -62,26 +35,23 @@ export function Home() {
   };
 
   return (
-    <div className="space-y-14">
+    <div className="space-y-16 lg:space-y-24">
       {profile.firstName && (
         <p className="-mb-8 flex items-center gap-2 text-sm font-semibold">
           <Hefi className="h-7 w-7" /> {greeting}, {profile.firstName}! Hefi hat den Ofen schon an.
         </p>
       )}
 
-      <section className="grid items-center gap-8 md:grid-cols-[1.15fr_1fr]" aria-labelledby="hero-titel">
+      <section className="grid items-center gap-8 md:grid-cols-[1.1fr_1fr] lg:gap-16" aria-labelledby="hero-titel">
         <div>
-          <p className="mb-3 inline-flex items-center gap-2 rounded-full bg-mehl px-3 py-1 text-sm font-semibold shadow-karte">
-            <span className="h-2 w-2 rounded-full bg-herz" aria-hidden="true" /> Neu: Pendler Zmorge ab CHF 4.90
-          </p>
-          <h1 id="hero-titel" className="text-[2.6rem] font-semibold leading-[1.02] sm:text-6xl">
+          <h1 id="hero-titel" className="text-[2.5rem] font-semibold leading-[1.03] sm:text-6xl xl:text-7xl">
             Dein Morgen darf chaotisch sein.
             <span className="mt-1 block text-herz">Dein Zmorge nicht.</span>
           </h1>
-          <p className="mt-4 max-w-prose text-lg text-kruste-muted">
+          <p className="mt-5 max-w-prose text-lg text-kruste-muted xl:text-xl">
             Im Zug vorbestellen, am Abholtresen Code zeigen, in unter einer Minute weiter. Frisch und warm aus unserer eigenen Backstube.
           </p>
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="mt-7 flex flex-wrap gap-3">
             <Link to="/sortiment" className="btn-primary text-base">
               Pendler Zmorge bestellen
             </Link>
@@ -89,7 +59,7 @@ export function Home() {
               Kreation zusammenstellen
             </Link>
           </div>
-          <ul className="mt-6 grid gap-2 text-sm sm:grid-cols-3">
+          <ul className="mt-7 flex flex-wrap gap-x-6 gap-y-2 text-sm">
             {['Ohne Anstehen', 'Twint & Apple Pay', 'Studi Card: 11. Zmorge gratis'].map((t) => (
               <li key={t} className="flex items-center gap-1.5 font-semibold">
                 <Check /> {t}
@@ -97,7 +67,13 @@ export function Home() {
             ))}
           </ul>
         </div>
-        <SplitMorning />
+        <Link to="/sortiment" className="group relative block w-full max-w-2xl justify-self-center overflow-hidden rounded-[2rem] shadow-hoch" aria-label="Pendler Zmorge ab CHF 4.90 ansehen">
+          <ProductArt art="set" category="zmorge" className="aspect-[4/3] h-auto w-full transition duration-500 group-hover:scale-[1.03]" />
+          <span className="absolute bottom-4 left-4 rounded-2xl bg-mehl/95 px-4 py-2 shadow-karte">
+            <span className="block text-xs font-semibold text-kruste-muted">Pendler Zmorge</span>
+            <span className="font-display text-xl font-semibold">ab CHF 4.90</span>
+          </span>
+        </Link>
       </section>
 
       {active.length > 0 && (
@@ -145,21 +121,20 @@ export function Home() {
       )}
 
       <section aria-labelledby="combo-titel">
-        <p className="eyebrow">Spar-Combos</p>
         <h2 id="combo-titel" className="text-3xl font-semibold">
           Pendler Zmorge
         </h2>
-        <p className="mt-1 max-w-prose text-kruste-muted">Getränk plus Gipfeli oder Brötli, günstiger als einzeln. Jedes Zmorge gibt einen Stempel auf die Studi Card.</p>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        <p className="mt-1 max-w-prose text-kruste-muted">Getränk plus Gipfeli oder Brötli, günstiger als einzeln.</p>
+        <div className="mt-5 grid gap-4 sm:grid-cols-2">
           {combos.map((p) => (
-            <ProductCard key={p.id} product={p} />
+            <ProductCard key={p.id} product={p} wide />
           ))}
         </div>
       </section>
 
-      <section className="grid items-center gap-6 overflow-hidden rounded-3xl bg-pastell-rosa p-5 sm:p-8 md:grid-cols-[1fr_1.1fr]" aria-labelledby="kreation-titel">
+      <section className="grid items-center gap-6 overflow-hidden rounded-[2rem] bg-pastell-rosa p-6 sm:p-10 md:grid-cols-[1fr_1fr] lg:gap-12" aria-labelledby="kreation-titel">
         <div>
-          <p className="eyebrow">Nur bei uns</p>
+          <p className="eyebrow">Deine Kreation</p>
           <h2 id="kreation-titel" className="text-3xl font-semibold">
             Nach deinem Geschmack, mit Herz gebacken.
           </h2>
@@ -176,17 +151,7 @@ export function Home() {
             Jetzt zusammenstellen · ab CHF 5.50
           </Link>
         </div>
-        <Link to="/kreation" className="card card-hover block overflow-hidden" aria-label={`${monat.name}, zur Kreation`}>
-          <ProductArt art="kreation" category="kreation" className="h-40 w-full" />
-          <div className="p-4">
-            <p className="eyebrow">Kreation des Monats</p>
-            <p className="font-display text-xl font-semibold">{monat.name.replace('Kreation des Monats ', '')}</p>
-            <p className="text-sm text-kruste-muted">{monat.description}</p>
-            <div className="mt-2">
-              <PriceTag product={monat} />
-            </div>
-          </div>
-        </Link>
+        <ProductArt art="kreation" category="kreation" className="aspect-[4/3] h-auto w-full max-w-md justify-self-center rounded-3xl" />
       </section>
 
       <section aria-labelledby="empf-titel">
@@ -198,14 +163,14 @@ export function Home() {
             Ganzes Sortiment
           </Link>
         </div>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {featured.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}
         </div>
       </section>
 
-      <section aria-labelledby="sofunktionierts" className="grid gap-6 md:grid-cols-[1fr_1fr]">
+      <section aria-labelledby="sofunktionierts" className="grid gap-8 md:grid-cols-[1fr_1fr] lg:gap-16">
         <div>
           <h2 id="sofunktionierts" className="text-2xl font-semibold">
             So gehts
@@ -239,19 +204,6 @@ export function Home() {
         <StorePicker />
       </section>
 
-      <section className="grid gap-4 rounded-3xl bg-pastell-mint p-5 sm:grid-cols-[auto_1fr] sm:items-center sm:p-6" aria-labelledby="retten-titel">
-        <span className="flex h-14 w-14 items-center justify-center rounded-full bg-mehl text-3xl" aria-hidden="true">
-          🌱
-        </span>
-        <div>
-          <h2 id="retten-titel" className="text-xl font-semibold">
-            Abends retten statt wegwerfen
-          </h2>
-          <p className="text-sm">
-            Was am Abend übrig bleibt, gibts als Überraschungspaket über Too Good To Go. Abholung in der letzten Stunde vor Ladenschluss am Abholtresen.
-          </p>
-        </div>
-      </section>
     </div>
   );
 }

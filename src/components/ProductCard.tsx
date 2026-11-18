@@ -24,31 +24,29 @@ export function PriceTag({ product, large = false }: { product: Product; large?:
   );
 }
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({ product, wide = false }: { product: Product; wide?: boolean }) {
   const { cart, addToCart, setQty } = useApp();
   const [open, setOpen] = useState(false);
   const configurable = !!product.options;
   const qty = configurable
     ? cart.filter((l) => l.productId.split('|')[0] === product.id).reduce((n, l) => n + l.qty, 0)
     : (cart.find((l) => l.productId === product.id)?.qty ?? 0);
-  const saving = product.compareAt ? product.compareAt - product.price : 0;
 
   return (
-    <article className="card card-hover relative flex overflow-hidden sm:flex-col" aria-labelledby={`p-${product.id}`}>
-      <div className="relative w-28 shrink-0 sm:w-full">
-        <ProductArt art={product.art} category={product.category} className="h-full w-full sm:h-36" />
+    <article className={`card card-hover relative flex overflow-hidden sm:flex-col ${wide ? 'lg:flex-row' : ''}`} aria-labelledby={`p-${product.id}`}>
+      <div className={`relative w-28 shrink-0 min-[400px]:w-32 sm:w-full ${wide ? 'lg:w-[46%]' : ''}`}>
+        <ProductArt art={product.art} category={product.category} className={`h-full w-full sm:aspect-[4/3] sm:h-auto ${wide ? 'lg:h-full' : ''}`} />
         {product.badge && (
-          <span className="absolute left-2 top-2 rounded-full bg-kruste px-2 py-0.5 text-[11px] font-bold text-teig">{product.badge}</span>
+          <span className="absolute left-2 top-2 rounded-full bg-mehl/95 px-2 py-0.5 text-[11px] font-bold text-herz shadow-karte">{product.badge}</span>
         )}
       </div>
-      <div className="flex flex-1 flex-col gap-1.5 p-3 sm:p-4">
+      <div className={`flex flex-1 flex-col gap-1.5 p-3 sm:p-4 ${wide ? 'lg:p-6' : ''}`}>
         <h3 id={`p-${product.id}`} className="text-lg font-semibold leading-tight">
           {product.name}
         </h3>
         <p className="text-sm text-kruste-muted">{product.description}</p>
-        {(product.tags.length > 0 || saving > 0) && (
+        {product.tags.length > 0 && (
           <p className="flex flex-wrap gap-1">
-            {saving > 0 && <span className="rounded-full bg-herz px-2 py-0.5 text-xs font-semibold text-white">Du sparst {chf(saving)}</span>}
             {product.tags.includes('vegan') ? <TagBadge tag="vegan" /> : product.tags.map((t) => <TagBadge key={t} tag={t} />)}
           </p>
         )}

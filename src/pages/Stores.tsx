@@ -16,7 +16,7 @@ export default function Stores() {
       </div>
 
       <h2 className="mt-10 text-2xl font-semibold">Öffnungszeiten</h2>
-      <div className="mt-3 grid gap-3 sm:grid-cols-3">
+      <div className="mt-3 grid gap-4 md:grid-cols-3">
         {STORES.map((s) => (
           <section key={s.id} className="card p-4" aria-labelledby={`f-${s.id}`}>
             <h3 id={`f-${s.id}`} className="text-lg font-semibold">

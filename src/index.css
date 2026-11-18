@@ -31,7 +31,7 @@
   .card { @apply rounded-2xl bg-mehl shadow-karte; }
   .card-hover { @apply transition hover:-translate-y-0.5 hover:shadow-hoch; }
   .eyebrow { @apply text-xs font-bold uppercase tracking-[.14em] text-herz; }
-  .container-page { @apply mx-auto w-full max-w-6xl px-4 sm:px-6; }
+  .container-page { @apply mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-10 2xl:px-14; }
   .input {
     @apply min-h-[44px] w-full rounded-xl border-2 border-linie bg-mehl px-4 text-base text-kruste
       placeholder:text-kruste-muted focus:border-herz focus:outline-none;

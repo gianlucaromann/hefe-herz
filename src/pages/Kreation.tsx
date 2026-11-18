@@ -10,8 +10,8 @@ export default function Kreation() {
   const base = PRODUCTS.find((p) => p.id === 'kreation')!;
   const monat = PRODUCTS.find((p) => p.id === 'kreation-monat')!;
   return (
-    <div className="mx-auto max-w-4xl space-y-8">
-      <section className="grid items-center gap-5 overflow-hidden rounded-3xl bg-pastell-rosa p-5 sm:grid-cols-[1fr_220px] sm:p-8">
+    <div className="mx-auto max-w-6xl space-y-8">
+      <section className="grid items-center gap-5 overflow-hidden rounded-[2rem] bg-pastell-rosa p-6 sm:grid-cols-[1fr_260px] sm:p-10">
         <div>
           <p className="eyebrow">Nur bei Hefe &amp; Herz</p>
           <h1 className="mt-1 text-4xl font-semibold leading-tight sm:text-5xl">Deine Kreation</h1>
@@ -20,7 +20,7 @@ export default function Kreation() {
           </p>
           <p className="mt-2 text-sm text-kruste-muted">Tipp: Am Vorabend bestellen, am Morgen ohne Warten abholen.</p>
         </div>
-        <ProductArt art="kreation" category="kreation" className="hidden w-full rounded-2xl sm:block" />
+        <ProductArt art="kreation" category="kreation" className="hidden aspect-[4/3] h-auto w-full rounded-3xl sm:block" />
       </section>
 
       <section className="card p-4 sm:p-6" aria-label="Kreation zusammenstellen">
@@ -35,7 +35,7 @@ export default function Kreation() {
         </p>
       )}
 
-      <section className="grid items-center gap-4 sm:grid-cols-[1fr_1fr]" aria-labelledby="monat-titel">
+      <section className="grid items-center gap-6 sm:grid-cols-[1fr_1fr]" aria-labelledby="monat-titel">
         <div>
           <h2 id="monat-titel" className="text-2xl font-semibold">
             Kreation des Monats
