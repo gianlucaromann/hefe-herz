@@ -9,7 +9,7 @@ import { bookingsFor } from '../lib/orders';
 import { generateSlots, nextFreeSlot, type Slot } from '../lib/slots';
 import { KEYS, load } from '../lib/storage';
 import type { Order, PaymentMethod, Store } from '../lib/types';
-import { cheapestItemPrice, productById, stampsInCart, useApp, useNow } from '../state/AppState';
+import { cheapestItemPrice, productById, useApp, useNow } from '../state/AppState';
 
 export const MIN_ORDER = 4.9;
 
@@ -34,7 +34,7 @@ const PAYMENTS: { id: PaymentMethod; label: string; hint: string }[] = [
 ];
 
 export default function Checkout() {
-  const { cart, cartTotal, store, orders, setQty, removeFromCart, placeOrder, profile, stamps, studiActive, activateStudi, addToCart } = useApp();
+  const { cart, cartTotal, store, orders, setQty, removeFromCart, placeOrder, profile, stamps, addToCart } = useApp();
   const navigate = useNavigate();
   const now = useNow(20_000);
   const hour = now.getHours();
@@ -81,7 +81,6 @@ export default function Checkout() {
   const total = Math.max(0, cartTotal - discount);
   const belowMin = cartTotal < MIN_ORDER;
   const hasDrink = cart.some((l) => productById(l.productId)?.category === 'getraenke' || productById(l.productId)?.stamp);
-  const comboCount = stampsInCart(cart);
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -300,16 +299,6 @@ export default function Checkout() {
             </label>
           ))}
         </fieldset>
-        {comboCount > 0 && !studiActive && (
-          <div className="flex flex-wrap items-center gap-3 rounded-xl bg-pastell-blau px-4 py-2 text-sm">
-            <span className="flex-1">
-              <strong>Studi oder Lernende:r?</strong> Aktivier die Studi Card und sammle {comboCount === 1 ? 'deinen ersten Stempel' : `${comboCount} Stempel`}.
-            </span>
-            <button type="button" className="btn-secondary min-h-[40px] text-sm" onClick={activateStudi}>
-              Aktivieren
-            </button>
-          </div>
-        )}
         {stamps.rewards > 0 && cheapestItemPrice(cart) === 0 && (
           <Alert tone="info">Dein Gratis-Zmorge wartet: Leg ein Pendler Zmorge in den Warenkorb, um es einzulösen.</Alert>
         )}
@@ -317,14 +306,14 @@ export default function Checkout() {
           <label className="flex min-h-[44px] cursor-pointer items-center gap-3 rounded-xl bg-getreide-light px-4 py-2">
             <input type="checkbox" checked={redeem} onChange={(e) => setRedeem(e.target.checked)} className="h-5 w-5 accent-herz" />
             <span>
-              <strong>Gratis-Zmorge einlösen</strong> (Studi Card voll) · minus {chf(cheapestItemPrice(cart))}
+              <strong>Gratis-Zmorge einlösen</strong> (Sammelkarte voll) · minus {chf(cheapestItemPrice(cart))}
             </span>
           </label>
         )}
         <dl className="space-y-1 border-t border-linie pt-3">
           {discount > 0 && (
             <div className="flex justify-between text-sm">
-              <dt>Studi Card</dt>
+              <dt>Sammelkarte</dt>
               <dd className="tabular-nums">− {chf(discount)}</dd>
             </div>
           )}

@@ -52,7 +52,7 @@ export default function Backstube() {
         {orders.length > 0 &&
           (confirmReset ? (
             <span className="ml-auto flex flex-wrap items-center gap-2 text-sm">
-              Alle Demo-Bestellungen und die Studi-Card-Stempel löschen?
+              Alle Demo-Bestellungen und die Sammelkarten-Stempel löschen?
               <button
                 type="button"
                 className="btn-primary text-sm"

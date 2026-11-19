@@ -1,4 +1,4 @@
-export type Category = 'zmorge' | 'kreation' | 'zmittag' | 'gebaeck' | 'suesses' | 'getraenke';
+export type Category = 'zmorge' | 'zmittag' | 'gebaeck' | 'suesses' | 'getraenke';
 export type Tag = 'vegan' | 'vegetarisch';
 
 export interface Product {
@@ -15,7 +15,7 @@ export interface Product {
   /** Preis ist Grundpreis («ab») */
   priceFrom?: boolean;
   badge?: string;
-  /** Zählt für die Studi Card */
+  /** Zählt für die Sammelkarte */
   stamp?: boolean;
   options?: OptionGroup[];
   /** Nur bei zusammengestellten Produkten: gewählte Optionen als Text */
@@ -73,7 +73,7 @@ export interface Order {
   storeId: string;
   items: OrderItem[];
   subtotal: number;
-  discount: number; // Gratis-Zmorge aus Studi Card
+  discount: number; // Gratis-Zmorge aus Sammelkarte
   total: number;
   slot: string; // ISO-Zeit der Abholung
   firstName: string;
@@ -87,7 +87,6 @@ export interface Order {
 
 export const CATEGORIES: { id: Category; label: string }[] = [
   { id: 'zmorge', label: 'Zmorge' },
-  { id: 'kreation', label: 'Deine Kreation' },
   { id: 'zmittag', label: 'Zmittag' },
   { id: 'gebaeck', label: 'Gebäck' },
   { id: 'suesses', label: 'Süsses' },

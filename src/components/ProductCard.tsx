@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { chf } from '../lib/format';
 import type { Product } from '../lib/types';
 import { useApp } from '../state/AppState';
@@ -56,11 +55,7 @@ export function ProductCard({ product, wide = false }: { product: Product; wide?
         </details>
         <div className="mt-auto flex items-center justify-between gap-2 pt-1">
           <PriceTag product={product} />
-          {product.id === 'kreation' ? (
-            <Link to="/kreation" className="btn-primary px-4">
-              Zusammenstellen
-            </Link>
-          ) : configurable ? (
+          {configurable ? (
             <button type="button" className="btn-primary px-4" onClick={() => setOpen(true)} aria-haspopup="dialog">
               {qty > 0 ? `Noch eins (${qty})` : 'Wählen'}
             </button>
@@ -73,7 +68,7 @@ export function ProductCard({ product, wide = false }: { product: Product; wide?
           )}
         </div>
       </div>
-      {configurable && product.id !== 'kreation' && <ConfiguratorDialog product={product} open={open} onClose={() => setOpen(false)} />}
+      {configurable && <ConfiguratorDialog product={product} open={open} onClose={() => setOpen(false)} />}
     </article>
   );
 }

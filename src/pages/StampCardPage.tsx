@@ -17,8 +17,8 @@ export default function StampCardPage() {
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <div>
-        <p className="eyebrow">Gratis für Studierende und Lernende</p>
-        <h1 className="text-4xl font-semibold">Studi Card</h1>
+        <p className="eyebrow">Für alle, gratis</p>
+        <h1 className="text-4xl font-semibold">Sammelkarte</h1>
         <p className="mt-2 max-w-prose text-lg text-kruste-muted">
           Pro Pendler Zmorge gibts einen Stempel. Bei 10 Stempeln ist dein 11. Pendler Zmorge gratis. Kein Konto, kein Plastik: Die Karte lebt in deinem Browser.
         </p>

@@ -55,12 +55,12 @@ export function Home() {
             <Link to="/sortiment" className="btn-primary text-base">
               Pendler Zmorge bestellen
             </Link>
-            <Link to="/kreation" className="btn-secondary text-base">
-              Kreation zusammenstellen
+            <Link to="/sortiment" className="btn-secondary text-base">
+              Ganzes Sortiment
             </Link>
           </div>
           <ul className="mt-7 flex flex-wrap gap-x-6 gap-y-2 text-sm">
-            {['Ohne Anstehen', 'Twint & Apple Pay', 'Studi Card: 11. Zmorge gratis'].map((t) => (
+            {['Ohne Anstehen', 'Twint & Apple Pay', 'Sammelkarte: 11. Zmorge gratis'].map((t) => (
               <li key={t} className="flex items-center gap-1.5 font-semibold">
                 <Check /> {t}
               </li>
@@ -132,27 +132,6 @@ export function Home() {
         </div>
       </section>
 
-      <section className="grid items-center gap-6 overflow-hidden rounded-[2rem] bg-pastell-rosa p-6 sm:p-10 md:grid-cols-[1fr_1fr] lg:gap-12" aria-labelledby="kreation-titel">
-        <div>
-          <p className="eyebrow">Deine Kreation</p>
-          <h2 id="kreation-titel" className="text-3xl font-semibold">
-            Nach deinem Geschmack, mit Herz gebacken.
-          </h2>
-          <p className="mt-2 max-w-prose">Stell dein Brötli selbst zusammen. Wir backen, belegen und machen es warm, bevor du da bist.</p>
-          <ol className="mt-4 flex flex-wrap gap-2 text-sm font-semibold">
-            {['Brot', 'Füllung', 'Sauce', 'Topping'].map((s, i) => (
-              <li key={s} className="flex items-center gap-2 rounded-full bg-mehl px-3 py-1.5">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-herz text-xs text-white">{i + 1}</span>
-                {s}
-              </li>
-            ))}
-          </ol>
-          <Link to="/kreation" className="btn-primary mt-5">
-            Jetzt zusammenstellen · ab CHF 5.50
-          </Link>
-        </div>
-        <ProductArt art="kreation" category="kreation" className="aspect-[4/3] h-auto w-full max-w-md justify-self-center rounded-3xl" />
-      </section>
 
       <section aria-labelledby="empf-titel">
         <div className="mb-3 flex items-baseline justify-between gap-2">
@@ -177,7 +156,7 @@ export function Home() {
           </h2>
           <ol className="mt-3 space-y-4">
             {[
-              ['Auswählen', 'Pendler Zmorge, Kreation oder Zmittag. Am Vorabend oder im Bus.'],
+              ['Auswählen', 'Pendler Zmorge, Gebäck oder Zmittag. Am Vorabend oder im Bus.'],
               ['Im Voraus zahlen', 'Mit Twint, Apple Pay oder Karte. Nächste freie Zeit ist vorausgewählt.'],
               ['Code zeigen', 'Am Abholtresen. Wir geben dir die Tüte persönlich, du erwischst den Zug.'],
             ].map(([t, d], i) => (

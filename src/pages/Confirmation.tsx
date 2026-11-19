@@ -89,7 +89,7 @@ export default function Confirmation() {
         <dl className="mt-2 space-y-1 border-t border-linie pt-3">
           {order.discount > 0 && (
             <div className="flex justify-between text-sm">
-              <dt>Studi Card (Gratis-Zmorge)</dt>
+              <dt>Sammelkarte (Gratis-Zmorge)</dt>
               <dd className="tabular-nums">− {chf(order.discount)}</dd>
             </div>
           )}
@@ -105,17 +105,12 @@ export default function Confirmation() {
         {(order.stampsEarned ?? 0) > 0 ? (
           <p className="mt-3 rounded-xl bg-pastell-blau px-3 py-2 text-sm">
             <strong>+{order.stampsEarned} Stempel</strong> auf deiner{' '}
-            <Link to="/studi-card" className="underline">
-              Studi Card
+            <Link to="/sammelkarte" className="underline">
+              Sammelkarte
             </Link>
             .
           </p>
         ) : null}
-        {order.items.some((i) => i.productId.startsWith('kreation')) && (
-          <p className="mt-3 rounded-xl bg-pastell-rosa px-3 py-2 text-sm">
-            <strong>Zeig deine Kreation!</strong> Poste sie als Instagram-Story mit #ZeigDeineKreation und hol dir beim nächsten Besuch ein Gratis-Topping.
-          </p>
-        )}
       </section>
 
       <div className="flex flex-wrap justify-center gap-3">

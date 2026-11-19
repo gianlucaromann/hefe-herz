@@ -2,7 +2,7 @@ import type { Product } from './types';
 
 export type Selection = Record<string, string[]>;
 
-/** Schlüssel einer zusammengestellten Variante: "kreation|brot=laugen|topping=rucola,gurke" */
+/** Schlüssel einer zusammengestellten Variante: "pendler-zmorge-brot|brot=kaese|getraenke=hafer" */
 export function variantKey(baseId: string, sel: Selection): string {
   const parts = Object.entries(sel)
     .filter(([, v]) => v.length)

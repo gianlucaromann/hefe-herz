@@ -8,7 +8,6 @@ import { Menu } from './pages/Menu';
 const Checkout = lazy(() => import('./pages/Checkout'));
 const Confirmation = lazy(() => import('./pages/Confirmation'));
 const StampCardPage = lazy(() => import('./pages/StampCardPage'));
-const Kreation = lazy(() => import('./pages/Kreation'));
 const Stores = lazy(() => import('./pages/Stores'));
 const Backstube = lazy(() => import('./pages/Backstube'));
 const Privacy = lazy(() => import('./pages/Privacy'));
@@ -23,9 +22,9 @@ export function App() {
           <Route path="/sortiment" element={<Menu />} />
           <Route path="/kasse" element={<Checkout />} />
           <Route path="/bestellung/:id" element={<Confirmation />} />
-          <Route path="/kreation" element={<Kreation />} />
-          <Route path="/studi-card" element={<StampCardPage />} />
-          <Route path="/sammelkarte" element={<Navigate to="/studi-card" replace />} />
+          <Route path="/sammelkarte" element={<StampCardPage />} />
+          <Route path="/studi-card" element={<Navigate to="/sammelkarte" replace />} />
+          <Route path="/kreation" element={<Navigate to="/sortiment" replace />} />
           <Route path="/filialen" element={<Stores />} />
           <Route path="/backstube" element={<Backstube />} />
           <Route path="/datenschutz" element={<Privacy />} />

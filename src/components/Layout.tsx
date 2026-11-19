@@ -34,8 +34,7 @@ function Header() {
         </Link>
         <nav aria-label="Hauptnavigation" className="hidden items-center gap-1 md:flex">
           <NavLink to="/sortiment" className={navClass}>Sortiment</NavLink>
-          <NavLink to="/kreation" className={navClass}>Deine Kreation</NavLink>
-          <NavLink to="/studi-card" className={navClass}>Studi Card</NavLink>
+          <NavLink to="/sammelkarte" className={navClass}>Sammelkarte</NavLink>
           <NavLink to="/filialen" className={navClass}>Filialen</NavLink>
         </nav>
         <Link
@@ -56,8 +55,7 @@ function Header() {
       </div>
       <nav aria-label="Navigation mobil" className="no-scrollbar container-page flex gap-0.5 overflow-x-auto pb-2 text-[13px] md:hidden">
         <NavLink to="/sortiment" className={navClass}>Sortiment</NavLink>
-        <NavLink to="/kreation" className={(a) => `${navClass(a)} whitespace-nowrap`}>Kreation</NavLink>
-        <NavLink to="/studi-card" className={(a) => `${navClass(a)} whitespace-nowrap`}>Studi Card</NavLink>
+        <NavLink to="/sammelkarte" className={(a) => `${navClass(a)} whitespace-nowrap`}>Sammelkarte</NavLink>
         <NavLink to="/filialen" className={(a) => `${navClass(a)} gap-1 whitespace-nowrap`}>
           <PinIcon /> {store ? store.name : 'Filiale wählen'}
         </NavLink>
@@ -69,7 +67,7 @@ function Header() {
 function CartBar() {
   const { cartCount, cartTotal } = useApp();
   const { pathname } = useLocation();
-  if (cartCount === 0 || pathname.startsWith('/kasse') || pathname.startsWith('/kreation') || pathname.startsWith('/bestellung') || pathname.startsWith('/backstube')) return null;
+  if (cartCount === 0 || pathname.startsWith('/kasse') || pathname.startsWith('/bestellung') || pathname.startsWith('/backstube')) return null;
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 border-t border-linie bg-teig/95 p-3 backdrop-blur" style={{ paddingBottom: 'max(.75rem, env(safe-area-inset-bottom))' }}>
       <div className="mx-auto max-w-xl">
