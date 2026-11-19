@@ -61,7 +61,7 @@ export function Home() {
             </Link>
           </div>
           <ul className="mt-7 flex flex-wrap gap-x-6 gap-y-2 text-sm">
-            {['Ohne Anstehen', 'Twint & Apple Pay', 'Sammelkarte: 11. Zmorge gratis'].map((t) => (
+            {['Ohne Anstehen', 'Twint & Apple Pay', 'Sammelkarte: 13. Zmorge gratis'].map((t) => (
               <li key={t} className="flex items-center gap-1.5 font-semibold">
                 <Check /> {t}
               </li>

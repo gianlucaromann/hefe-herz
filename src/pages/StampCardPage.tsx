@@ -20,7 +20,7 @@ export default function StampCardPage() {
         <p className="eyebrow">Für alle, gratis</p>
         <h1 className="text-4xl font-semibold">Sammelkarte</h1>
         <p className="mt-2 max-w-prose text-lg text-kruste-muted">
-          Pro Pendler Zmorge gibts einen Stempel. Bei 10 Stempeln ist dein 11. Pendler Zmorge gratis. Kein Konto, kein Plastik: Die Karte lebt in deinem Browser.
+          Zum Start schenken wir dir 2 Stempel. Pro Pendler Zmorge gibts einen weiteren, bei 12 Stempeln ist dein 13. Pendler Zmorge gratis. Kein Konto, kein Plastik: Die Karte lebt in deinem Browser.
         </p>
       </div>
       <StampCard />

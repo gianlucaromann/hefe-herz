@@ -23,7 +23,7 @@ Für Direktaufrufe von Unterseiten (z. B. `/backstube`) muss ein Hosting die SPA
 | `/sortiment` | Sortiment nach Kategorien, Suche, Filter vegan/vegetarisch, Allergene |
 | `/kasse` | Warenkorb, Abholtag (heute/morgen/übermorgen) und -zeit, Vorauszahlung Twint/Apple Pay/Karte (simuliert), Mindestbestellwert CHF 4.90, Gratis-Zmorge einlösen |
 | `/bestellung/:id` | Bestätigung mit Bestellnummer, Abholcode + QR, Kalender-Export (.ics), simulierter Status |
-| `/sammelkarte` | Sammelkarte für alle: 1 Stempel pro Pendler Zmorge, 11. gratis; Bring a Friend |
+| `/sammelkarte` | Sammelkarte für alle: 2 Stempel geschenkt, 1 Stempel pro Pendler Zmorge, bei 12 ist das 13. gratis; Bring a Friend |
 | `/filialen` | Bahnhof Winterthur, Zürich HB, Altstadt Winterthur (Öffnungszeiten, Ausstattung) |
 | `/backstube` | Team-Ansicht ohne Login: Bestellungen nach Abholzeit, Status per Klick, Demo zurücksetzen |
 | `/datenschutz` | Datenschutz-Hinweis |

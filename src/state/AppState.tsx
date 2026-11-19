@@ -8,7 +8,18 @@ import type { CartLine, Order, OrderStatus, PaymentMethod, Product, Store } from
 
 export const PRODUCTS = productsData as Product[];
 export const STORES = storesData as Store[];
-export const STAMPS_FOR_REWARD = 10;
+export const STAMPS_FOR_REWARD = 12;
+export const GIFT_STAMPS = 2;
+
+const NEW_CARD = { count: GIFT_STAMPS, rewards: 0, gift: true };
+
+/** Bestehende Karten ohne Geschenk erhalten die 2 Gratis-Stempel einmalig. */
+function loadStamps(): Stamps {
+  const s = load<Stamps | null>(KEYS.stamps, null);
+  if (!s) return NEW_CARD;
+  if (s.gift === undefined) return { count: Math.min(STAMPS_FOR_REWARD - 1, s.count + GIFT_STAMPS), rewards: s.rewards, gift: true };
+  return s;
+}
 
 export const productById = (id: string) => resolve(id, PRODUCTS);
 export const storeById = (id: string | null | undefined) => STORES.find((s) => s.id === id);
@@ -16,6 +27,7 @@ export const storeById = (id: string | null | undefined) => STORES.find((s) => s
 interface Stamps {
   count: number; // 0–9
   rewards: number; // einlösbare Gratis-Zmorge
+  gift?: boolean; // erste Karte: 2 Stempel geschenkt (false nach der ersten vollen Karte)
 }
 
 interface Profile {
@@ -62,7 +74,7 @@ function lineTotal(cart: CartLine[]) {
   return cart.reduce((sum, l) => sum + (productById(l.productId)?.price ?? 0) * l.qty, 0);
 }
 
-/** Preis des günstigsten Pendler Zmorge im Warenkorb (Sammelkarte: 11. gratis), sonst 0. */
+/** Preis des günstigsten Pendler Zmorge im Warenkorb (Sammelkarte: 13. gratis), sonst 0. */
 export function cheapestItemPrice(cart: CartLine[]): number {
   const prices = cart.map((l) => productById(l.productId)).filter((p) => p?.stamp).map((p) => p!.price);
   return prices.length ? Math.min(...prices) : 0;
@@ -76,7 +88,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [storeId, setStoreIdState] = useState<string | null>(() => load(KEYS.store, null));
   const [cart, setCart] = useState<CartLine[]>(() => load(KEYS.cart, []));
   const [orders, setOrders] = useState<Order[]>(() => load(KEYS.orders, []));
-  const [stamps, setStamps] = useState<Stamps>(() => load(KEYS.stamps, { count: 0, rewards: 0 }));
+  const [stamps, setStamps] = useState<Stamps>(loadStamps);
   const [profile, setProfile] = useState<Profile>(() => load(KEYS.profile, { firstName: '', phone: '' }));
   const [lastAdded, setLastAdded] = useState<{ id: string; at: number } | null>(null);
 
@@ -90,7 +102,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const onStorage = (e: StorageEvent) => {
       if (e.key === KEYS.orders) setOrders(load(KEYS.orders, []));
-      if (e.key === KEYS.stamps) setStamps(load(KEYS.stamps, { count: 0, rewards: 0 }));
+      if (e.key === KEYS.stamps) setStamps(loadStamps());
     };
     window.addEventListener('storage', onStorage);
     return () => window.removeEventListener('storage', onStorage);
@@ -150,7 +162,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setStamps((s) => {
         const rewards = s.rewards - (discount > 0 ? 1 : 0);
         const total = s.count + earned;
-        return { ...s, count: total % STAMPS_FOR_REWARD, rewards: rewards + Math.floor(total / STAMPS_FOR_REWARD) };
+        const full = Math.floor(total / STAMPS_FOR_REWARD);
+        return { count: total % STAMPS_FOR_REWARD, rewards: rewards + full, gift: s.gift && full === 0 };
       });
       setProfile({ firstName: input.firstName.trim(), phone: input.phone?.trim() ?? '' });
       setCart([]);
@@ -165,7 +178,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const resetDemo = useCallback(() => {
     setOrders([]);
-    setStamps({ count: 0, rewards: 0 });
+    setStamps(NEW_CARD);
     setCart([]);
   }, []);
 
