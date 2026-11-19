@@ -9,6 +9,8 @@
   }
   body {
     @apply bg-teig font-sans text-kruste antialiased;
+    overscroll-behavior-y: none; /* kein Gummiband-Effekt in der installierten App */
+    -webkit-tap-highlight-color: transparent;
   }
   h1, h2, h3 {
     @apply font-display tracking-tight;

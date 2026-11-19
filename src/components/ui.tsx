@@ -1,10 +1,10 @@
 import type { ReactNode } from 'react';
-import { HeartKnot } from './Logo';
+import { BrandMark } from './Logo';
 
 export function Spinner({ label }: { label: string }) {
   return (
     <div role="status" className="flex flex-col items-center gap-3 py-16 text-kruste-muted">
-      <HeartKnot className="h-10 w-10 animate-pulse-soft" />
+      <BrandMark className="h-10 w-10 animate-pulse-soft" />
       <span>{label}</span>
     </div>
   );
@@ -13,7 +13,7 @@ export function Spinner({ label }: { label: string }) {
 export function EmptyState({ title, children, action }: { title: string; children?: ReactNode; action?: ReactNode }) {
   return (
     <div className="card mx-auto flex max-w-md flex-col items-center gap-3 p-8 text-center">
-      <HeartKnot className="h-12 w-12 opacity-80" />
+      <BrandMark className="h-12 w-12 opacity-80" />
       <h2 className="text-xl font-semibold">{title}</h2>
       {children && <div className="max-w-prose text-kruste-muted">{children}</div>}
       {action}

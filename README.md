@@ -64,7 +64,8 @@ src/
   Braun auf Creme 12.5:1 · Weiss auf Herz-Rot 5.3:1 · Herz-Rot auf Creme 4.9:1 · Braun auf Gelb 7.2:1 ·
   Sekundärtext `#6B5544` auf Creme 6.4:1. Getreide-Gelb wird nie als Textfarbe verwendet.
 - **Typografie:** Fraunces (Display-Serif) + Inter, lokal via Fontsource, System-Fallbacks. Fliesstext max. 65ch.
-- **Marke:** eigenes SVG-Wortlogo, das «&» sitzt in einem Herz; Bildzeichen ist ein geknoteter Teigstrang in Herzform.
+- **Marke:** Logo des Teams (Ähre mit Herz, Wortmarke «Hefe & Herz» mit rotem «&», Unterzeile «Bäckerei · aus der Region»),
+  als SVG nachgebaut in `src/components/Logo.tsx` (`Logo` quer, `LogoStacked`, `BrandMark`). App-Icons in `public/`.
   Produktbilder sind eigene, einfache SVG-Illustrationen.
 - **Slots:** 10-Min-Raster ab Öffnung (aufgerundet), letztes Fenster endet spätestens bei Ladenschluss,
   frühestens 10 Min nach jetzt, Kapazität 8. Ist heute nichts mehr frei, wird der nächste Öffnungstag angeboten.
@@ -90,4 +91,5 @@ npm run build:pages   # baut nach docs/ (Hash-Routing, relative Pfade)
 
 Einstellungen: *Settings → Pages → Build and deployment → Source: Deploy from a branch*,
 Branch `claude/youthful-allen-ti3awi`, Ordner `/docs`. Nach Änderungen `build:pages` erneut ausführen und committen.
+Web-App: `public/manifest.webmanifest`, App-Icons, Service Worker `public/sw.js` (Dateiliste wird von `scripts/sw.mjs` beim Build eingesetzt). Die App funktioniert nach dem ersten Besuch offline; auf der Startseite erscheint ein Installationshinweis.
 Eigene Domain: `www.hefe-herz.ch` (hefe-herz.ch leitet weiter) (Datei `public/CNAME`, wird bei jedem Build nach `docs/` kopiert).
